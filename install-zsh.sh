@@ -1,5 +1,8 @@
 #!/bin/bash
 
+###
+export ZDOTDIR=$HOME/.dotfiles/zsh
+
 ### INSTALL LATEST ZSH VERSION
 sudo apt-get install zsh -y
 
