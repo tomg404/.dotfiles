@@ -2,8 +2,8 @@
 
 ### SETUP ENVIRONMENT VARIABLES
 touch $HOME/.zshenv
-echo 'export XDG_CONFIG_HOME="$HOME/.config"' > $HOME/.zshenv
-echo 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' > $HOME/.zshenv
+echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.zshenv
+echo 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' >> $HOME/.zshenv
 
 ### SYMLINK ZSH-CONFIG to .config/zsh
 stow zsh
