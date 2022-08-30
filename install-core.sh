@@ -6,6 +6,7 @@ sudo apt-get upgrade -y
 
 ### CORE STUFF
 sudo apt-get install git -y
+sudo apt-get install curl -y
 sudo apt-get install stow -y
 
 ### TERMINAL STUFF
