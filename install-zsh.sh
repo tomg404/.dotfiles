@@ -1,17 +1,17 @@
 #!/bin/bash
 
-### SETUP ENVIRONMENT VARIABLES
+### Setup environment variables
 touch $HOME/.zshenv
-echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.zshenv
-echo 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' >> $HOME/.zshenv
+echo 'export XDG_CONFIG_HOME="$HOME/.config"' >> $HOME/.zshenv  # default location for config files : /home/user/.config
+echo 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' >> $HOME/.zshenv   # folder for zsh config files
 
-### SYMLINK ZSH-CONFIG to .config/zsh
+### Symlink zsh config folder to $HOME/.config/zsh (using GNU stow)
 stow zsh
 
-### INSTALL LATEST ZSH VERSION
+### Install latest version of zsh
 sudo apt-get install zsh -y
 
-### SET ZSH AS DEFAULT SHELL
+### Change default shell to zsh (does not work reliably!)
 sudo chsh -s $(which zsh)
 
 ### INSTALL OHMYZSH
