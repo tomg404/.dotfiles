@@ -1,1 +1,1 @@
-source .zsh_aliases
+source $ZDOTDIR/.zsh_aliases
