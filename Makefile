@@ -1,7 +1,7 @@
 all: install
 
 install:
-	stow --verbose nvim zsh
 	sh install-core.sh
+	stow --verbose nvim zsh
 	sh install-fonts.sh
 	sh install-zsh.sh
