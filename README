@@ -1,2 +1,8 @@
 # My dotfiles
 **Warning: None of the auto setups (using `make`) are properly tested yet. Use with caution!**
+
+## TODOs
+* clone instead of include peda (gdb)
+* drop nvim config and use astronvim
+* auto setup conky
+* split aliases from `.zshrc`
