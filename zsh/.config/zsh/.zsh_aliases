@@ -1,5 +1,1 @@
-alias zshconfig="nvim ~/.zshrc"
-alias nv="nvim"
-alias gfc="git commit -a -m \"fast commit\" && git push"
-alias odump="objdump -D -M intel"
-alias gdb="gdb -q"
+# TODO: split aliases from .zshrc file
