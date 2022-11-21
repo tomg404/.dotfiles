@@ -1,1 +1,2 @@
-source $HOME/.dotfiles/gdb-extras
+# Uncomment to use peda configuration
+# source ~/peda/peda.py
