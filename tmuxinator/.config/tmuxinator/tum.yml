@@ -1,0 +1,33 @@
+# /home/tom/.config/tmuxinator/main.yml
+
+name: tum
+root: ~/
+
+windows:
+  - GBS:
+      root: ~/Programming/gbs_homework
+      layout: even-horizontal
+      panes:
+        - clear 
+        - clear
+  - CPP:
+      root: ~/drive/uni/22ws/CPP/tomgaimann_tasks  
+      layout: main-vertical
+      panes:
+        - main-pane:
+          - clear
+        - run-pane:
+          - cd build
+          - echo "make runhw0X"
+        - test-pane:
+          - cd build
+          - echo "make testhw0X"
+  - ITS:
+      root: ~/drive/uni/22ws/SEC/hw/
+  - RNDM: 
+      layout: tiled
+      panes:
+        - neofetch
+        - htop
+        - tmuxinator version | toilet -f future --gay
+        - cmatrix

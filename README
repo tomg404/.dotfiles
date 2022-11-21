@@ -6,3 +6,4 @@
 * drop nvim config and use astronvim
 * auto setup conky
 * split aliases from `.zshrc`
+* add proper tmux (tmuxinator) config
