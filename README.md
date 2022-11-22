@@ -1,6 +1,10 @@
 # My dotfiles
 **Warning: None of the auto setups (using `make`) are properly tested yet. Use with caution!**
 
+## Sync & Backup
+* Synology Drive Client
+* Manual installation: https://www.synology.com/en-global/support/download
+
 ## TODOs
 ### Fix first
 * clone instead of include peda (gdb)
