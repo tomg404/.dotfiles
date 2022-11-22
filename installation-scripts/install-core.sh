@@ -9,7 +9,7 @@ sudo apt-get install git -y
 sudo apt-get install curl -y
 sudo apt-get install stow -y
 
-### TERMINAL STUFF
+### BASIC TERMINAL STUFF
 sudo apt-get install tmux -y
 sudo apt-get install neofetch -y
 sudo apt-get install neovim -y
@@ -24,5 +24,4 @@ sudo apt-get install synology-drive -y
 
 ### FILE PROCESSING
 sudo apt-get install unzip -y
-sudo apt-get install pdfunite -y
 

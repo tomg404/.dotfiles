@@ -25,3 +25,4 @@ fc-cache -f -v
 
 ### Output
 echo 'Font was installed successfully!'
+echo 'A restart might be necessary for the font to appear in the terminal settings!'
