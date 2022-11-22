@@ -13,8 +13,8 @@ core:
 fonts:
 	sh $(scripts)/install-fonts.sh
 	
-zsh:
-	sh $(scripts)/install-zsh.sh
+term:
+	sh $(scripts)/install-zsh-and-term.sh
 
 clean:
 
