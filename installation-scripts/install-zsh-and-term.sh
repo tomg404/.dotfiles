@@ -4,8 +4,11 @@
 sudo add-apt-repository ppa:aslatter/ppa -y
 sudo apt-get install alacritty -y
 
-### Symlink zsh config folder to $HOME/.config/zsh (using GNU stow)
+### Stow zsh, alacritty, tmux, tmuxinator config to $HOME/.config/...
 stow --verbose --dir=$HOME/.dotfiles zsh
+stow --verbose --dir=$HOME/.dotfiles alacritty
+stow --verbose --dir=$HOME/.dotfiles tmux
+stow --verbose --dir=$HOME/.dotfiles tmuxinator
 
 ### Install latest version of zsh
 sudo apt-get install zsh -y
@@ -14,7 +17,10 @@ sudo apt-get install zsh -y
 sudo apt-get install zsh-autosuggestions
 
 ### Change default shell to zsh (does not work reliably!)
+echo "Setting zsh as default shell..."
 sudo chsh -s $(which zsh)
+sudo -k # invalidate sudo timestamp to execute next command as user
+chsh -s $(which zsh)
 
 ### Link .zshenv file in home directory
 ln -s $HOME/.dotfiles/zsh/.config/zsh/.zshenv $HOME/.zshenv
