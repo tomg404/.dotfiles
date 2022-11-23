@@ -12,6 +12,8 @@ jobs:
     steps:
       - run: echo "hello world im at $HOME"
       - run: sudo apt install vim
+      - run: ls -a
+  
       
 #   build:
 #     runs-on: ubuntu-latest
