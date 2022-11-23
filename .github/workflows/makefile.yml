@@ -8,9 +8,9 @@ on:
 
 jobs:
   testing-github-ci:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - run: echo "hello world"
+      - run: echo "hello world im at $HOME"
       
   build:
     runs-on: ubuntu-latest
