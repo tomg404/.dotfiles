@@ -13,6 +13,11 @@ jobs:
       - run: echo "hello world im at $HOME"
       - run: sudo apt install vim
       - run: ls -a
+      
+  test-installation-scripts:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: make install
   
       
 #   build:
