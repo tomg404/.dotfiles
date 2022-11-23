@@ -5,7 +5,7 @@ all: install
 install:
 	sh $(scripts)/install-core.sh
 	sh $(scripts)/install-fonts.sh
-	sh $(scripts)/install-zsh.sh
+	sh $(scripts)/install-zsh-and-term.sh
 
 core:
 	sh $(scripts)/install-core.sh
