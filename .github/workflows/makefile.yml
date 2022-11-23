@@ -6,23 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:
-  testing-github-ci:
-    runs-on: ubuntu-22.04
-    steps:
-      - run: echo "hello world im at $HOME"
-      - run: sudo apt install vim
-      - run: ls -a
-      
-  test-installation-scripts:
-    name: Test installation scripts
+jobs:      
+  run-simple-make-install:
+    name: Run make install
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - run: ls -a
-      - run: tree
       - run: make install
-  
+      - run: tree -a
       
 #   build:
 #     runs-on: ubuntu-latest
