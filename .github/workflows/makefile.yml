@@ -15,8 +15,12 @@ jobs:
       - run: ls -a
       
   test-installation-scripts:
+    name: Test installation scripts
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -a
+      - run: tree
       - run: make install
   
       
