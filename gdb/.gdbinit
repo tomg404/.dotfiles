@@ -1,2 +1,2 @@
 # Uncomment to use peda configuration
-# source ~/peda/peda.py
+# source ~/.dotfiles/gdb/peda.py
