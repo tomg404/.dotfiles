@@ -17,7 +17,7 @@
 ## TODOs
 ### Fix first
 * clone instead of include peda (gdb)
-* drop nvim config and use astronvim
+* drop nvim config and ~~use astronvim~~
 * auto setup conky
 * ~~split aliases from `.zshrc`~~
 * add proper tmux (tmuxinator) config
