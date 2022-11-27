@@ -5,13 +5,17 @@ root: ~/
 
 windows:
   - GBS:
-      root: ~/Programming/gbs_homework
-      layout: even-horizontal
+      root: ~/programming/gbs_homework
+      layout: main-vertical
       panes:
-        - clear 
-        - clear
+        - main-pane:
+          - clear 
+        - run-pane:
+          - clear
+        - test-pane:
+          - clear
   - CPP:
-      root: ~/drive/uni/22ws/CPP/tomgaimann_tasks  
+      root: ~/programming/cpp_homework/tomgaimann_tasks
       layout: main-vertical
       panes:
         - main-pane:
