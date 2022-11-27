@@ -10,5 +10,5 @@ alias nvimconfig="nvim $HOME/.config/nvim/init.vim"
 alias gpp="g++ -std=c++20 -Wall -Wextra"
 alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/week"
 
-# For GBS homework
-alias run-xv6="sudo docker run -it -v $(pwd):/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest"
+# For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
+alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest'
