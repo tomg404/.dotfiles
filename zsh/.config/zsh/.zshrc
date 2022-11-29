@@ -20,7 +20,7 @@ zstyle ':omz:update' mode reminder
 DISABLE_AUTO_TITLE="true"
 
 # Enable command auto-correction.
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 source $ZSH/oh-my-zsh.sh
 
