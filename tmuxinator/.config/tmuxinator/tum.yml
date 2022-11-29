@@ -28,10 +28,15 @@ windows:
           - echo "make testhw0X"
   - ITS:
       root: ~/drive/uni/22ws/SEC/hw/
+      layout: main-vertical
+      panes:
+        - p1:
+        - p2:
+        - p3:
   - RNDM: 
       layout: tiled
       panes:
-        - neofetch
-        - htop
+        - neofetch --disable resolution de wm wm_theme theme icons
+        - btop
         - tmuxinator version | toilet -f future --gay
         - cmatrix
