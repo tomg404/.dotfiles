@@ -12,6 +12,9 @@
 * Synology Drive Client
 * Manual installation: https://www.synology.com/en-global/support/download
 
+## Obsidian
+* https://gist.github.com/shaybensasson/3e8e49af92d7e5013fc77da22bd3ae4c
+
 ---
 
 ## TODOs
