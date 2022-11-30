@@ -19,9 +19,6 @@ sudo chsh -s $(which zsh)
 sudo -k # invalidate sudo timestamp to execute next command as user
 chsh -s $(which zsh)
 
-### Link .zshenv file in home directory
-ln -s $HOME/.dotfiles/zsh/.config/zsh/.zshenv $HOME/.zshenv
-
 ### INSTALL OHMYZSH
 ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
