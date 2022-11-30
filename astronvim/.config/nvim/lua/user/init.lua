@@ -197,6 +197,11 @@ local config = {
 
     -- Add overrides for LSP server settings, the keys are the name of the server
     ["server-settings"] = {
+        clangd = {
+            capabilities = {
+                offsetEncoding = "utf-8"
+            }
+        }
       -- example for addings schemas to yamlls
       -- yamlls = { -- override table for require("lspconfig").yamlls.setup({...})
       --   settings = {
