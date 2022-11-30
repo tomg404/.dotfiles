@@ -3,7 +3,10 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.config/oh-my-zsh"
-plugins=(git)
+plugins=(
+  git
+  zsh-autosuggestions  
+)
 source $ZSH/oh-my-zsh.sh
 
 # Set theme. See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -40,5 +43,5 @@ fi
 source $ZDOTDIR/.zshaliases
 
 # source environment variables
-source $ZDOTDIR/.zshenv
+source $HOME/.zshenv
 
