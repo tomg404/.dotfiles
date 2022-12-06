@@ -31,8 +31,25 @@ windows:
       layout: main-vertical
       panes:
         - p1:
+          - clear
         - p2:
+          - clear
         - p3:
+          - clear
+  - AOC22:
+      root: ~/programming/cpp_homework/aoc22/
+      layout: main-vertical
+      panes:
+        - editor:
+          - clear
+        - build:  
+          - clear
+  - Kickstart:
+      root: ~/programming/kickstart/22/
+      layout: main-vertical
+      panes:
+        - editor:
+        - test:
   - RNDM: 
       layout: tiled
       panes:
