@@ -22,7 +22,7 @@ tum-dld () {
         return
     fi
     echo "url: $1" 
-    echo "output: $(pwd)/$2"
+    echo "output: $2"
 
     choice=n
     echo "Continue? [y/n] "
