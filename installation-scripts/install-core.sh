@@ -9,6 +9,7 @@ sudo apt-get install git -y
 sudo apt-get install curl -y
 sudo apt-get install stow -y            # managing config files
 sudo apt-get install okular -y          # best pdf reader
+sudo apt-get install ffmpeg -y
 
 ### BASIC TERMINAL STUFF
 sudo apt-get install tmux -y
