@@ -12,3 +12,23 @@ alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/wee
 
 # For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
 alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest'
+
+# Little script to download videos from .m8u4 urls
+tum-dld () {
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "Usage: $0 <url> <output>"
+        echo "<url>    : .m8u4 url"
+        echo "<output> : path (should end in .mp4)"
+        return
+    fi
+    echo "url: $1" 
+    echo "output: $(pwd)/$2"
+
+    choice=n
+    echo "Continue? [y/n] "
+    read choice
+    case "$choice" in
+        y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2";;
+        *) echo "exiting..."; return;;
+    esac
+}
