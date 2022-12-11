@@ -1,3 +1,4 @@
+# Aliases
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias nv="nvim"
@@ -13,11 +14,11 @@ alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/wee
 # For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
 alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest'
 
-# Little script to download videos from .m8u4 urls
-tum-dld () {
+# Little script to download videos from .m3u8 urls
+tum-live-dld () {
     if [[ -z "$1" || -z "$2" ]]; then
         echo "Usage: $0 <url> <output>"
-        echo "<url>    : .m8u4 url"
+        echo "<url>    : .m3u8 url"
         echo "<output> : path (should end in .mp4)"
         return
     fi
@@ -31,4 +32,43 @@ tum-dld () {
         y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2";;
         *) echo "exiting..."; return;;
     esac
+}
+
+# Script to grep m3u8 url from live.rbg url
+tum-live-grep-m3u8 () {
+    if [[ -z "$1" ]]; then
+        echo "Usage: $0 <live-rbg-url>\n"
+        echo "Needed Environment Variables:"
+        echo " - \$TUM_USER : your username on tumonline"
+        echo " - \$TUM_PASS : your password for tumonline"
+        return
+    fi
+    if [[ -z "$TUM_USER" || -z "$TUM_PASS" ]]; then
+        echo "Environment variable \$TUM_USER or \$TUM_PASS not set!"
+        return
+    fi
+    TARGET_PAGE="$1"
+    LOGIN_PAGE="https://live.rbg.tum.de/login"
+    COOKIE_FILE="/tmp/live-rbg-cookies.tmp"
+    OUT_FILE="/tmp/live-rbg-output.tmp"
+    # Retrieve cookies from tum live
+    curl -X POST \
+        -F 'username=$TUM_USER' \
+        -F 'password=$TUM_PASS' \
+        --cookie "$COOKIE_FILE" \
+        --cookie-jar "$COOKIE_FILE" \
+        -o /dev/null --silent \
+        "$LOGIN_PAGE"
+    # Download content from target url
+    curl --cookie "$COOKIE_FILE" \
+        -o "$OUT_FILE" --silent \
+        "$TARGET_PAGE"
+    # Grep .m3u8 url
+    M3_URL=$(grep -io -m 1 'https://.*m3u8' "$OUT_FILE")
+    if [[ -z "$M3_URL" ]]; then
+        echo "No url was found.."
+        echo "Please check your user/password"
+        return
+    fi
+    echo "$M3_URL"
 }
