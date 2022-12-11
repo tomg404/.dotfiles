@@ -23,7 +23,8 @@
 * drop nvim config and ~~use astronvim~~
 * auto setup conky
 * ~~split aliases from `.zshrc`~~
-* add proper tmux (tmuxinator) config
+* ~~add proper tmux (tmuxinator) config~~
 ### Fix some time
 * ~~add alacritty~~
 * ~~add neofetch~~
+* secrets management
