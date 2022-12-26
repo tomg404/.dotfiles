@@ -1,0 +1,9 @@
+progs:
+  - prog0:
+    attr: a
+    
+  - prog1:
+    attr: b
+
+  - prog2:
+    attr: c
