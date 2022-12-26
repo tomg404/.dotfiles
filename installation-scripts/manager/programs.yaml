@@ -1,0 +1,43 @@
+programs:
+  - actualPackage:
+    name: git
+    executable: git
+    package: git
+
+  # Minimal declaration
+  - program1:
+    name: Metasploit
+    executable: msfconsole
+    package: asdf_package
+
+  # Different name
+  - program2:
+    name: Python 3.10.0
+    executable: python3
+    package: asdf_package
+
+  # Differring package names for debian & arch
+  - program3:
+    name: Cargo
+    executable: cargo
+    package:
+      - arch: asdf_arch
+      - deb: asdf_apt
+
+  # Stow
+  - program5:
+    name: GNU Stow
+    executable: stow
+    package: stow
+
+  # No package for arch
+  - program4:
+    name: cmatrix
+    executable: cmatrix
+    package:
+      - deb: asdf_apt
+
+  
+
+
+    
