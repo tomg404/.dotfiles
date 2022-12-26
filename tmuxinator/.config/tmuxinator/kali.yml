@@ -1,0 +1,13 @@
+# /home/tom/.config/tmuxinator/main.yml
+
+name: tum
+root: ~/
+
+windows:
+  - default:
+      root: ~
+      layout: main-vertical
+      panes:
+        - a:
+        - b:
+        - c:
