@@ -26,5 +26,6 @@ sudo apt-get install synology-drive -y
 ### FILE PROCESSING
 sudo apt-get install unzip -y
 
-### LIBRARIES
-sudo apt-get install libfuse2 -y        # for appimages
+### APP IMAGE STUFF
+sudo apt-get install libfuse2 -y
+sudo apt-get install appimagelauncher -y
