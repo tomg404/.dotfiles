@@ -5,3 +5,4 @@ __pypackages__/
 ### ZSH ###
 oh-my-zsh/
 .zcompdump*
+zsh/.config/zsh/.zsh_history
