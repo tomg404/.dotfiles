@@ -29,7 +29,7 @@ tum-live-dld () {
     echo "Continue? [y/n] "
     read choice
     case "$choice" in
-        y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2";;
+        y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2" "$3";;
         *) echo "exiting..."; return;;
     esac
 }
@@ -55,20 +55,23 @@ tum-live-grep-m3u8 () {
     curl -X POST \
         -F 'username=$TUM_USER' \
         -F 'password=$TUM_PASS' \
-        --cookie "$COOKIE_FILE" \
         --cookie-jar "$COOKIE_FILE" \
-        -o /dev/null --silent \
         "$LOGIN_PAGE"
     # Download content from target url
     curl --cookie "$COOKIE_FILE" \
         -o "$OUT_FILE" --silent \
         "$TARGET_PAGE"
     # Grep .m3u8 url
-    M3_URL=$(grep -io -m 1 'https://.*m3u8' "$OUT_FILE")
+    M3_URL=$(grep -io -m 1 'h.*m3u8' "$OUT_FILE")
     if [[ -z "$M3_URL" ]]; then
         echo "No url was found.."
         echo "Please check your user/password"
         return
     fi
     echo "$M3_URL"
+}
+
+# Weather
+weather () {
+    curl "wttr.in/$1?format=3"
 }
