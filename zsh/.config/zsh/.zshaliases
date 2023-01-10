@@ -29,7 +29,7 @@ tum-live-dld () {
     echo "Continue? [y/n] "
     read choice
     case "$choice" in
-        y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2" "$3";;
+        y|Y) ffmpeg -i "$1" -c copy -bsf:a aac_adtstoasc "$2";;
         *) echo "exiting..."; return;;
     esac
 }
