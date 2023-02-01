@@ -14,6 +14,7 @@ sudo apt-get install ffmpeg -y
 ### BASIC TERMINAL STUFF
 sudo apt-get install tmux -y
 sudo apt-get install neovim -y          # maybe remove: need version >= 0.8.0 for astronvim
+sudo apt-get install exa                # replacement for ls command
 
 ### SYSTEM STUFF
 sudo apt-get install lm-sensors -y
@@ -28,4 +29,5 @@ sudo apt-get install unzip -y
 
 ### APP IMAGE STUFF
 sudo apt-get install libfuse2 -y
+sudo add-apt-repository ppa:appimagelauncher-team/stable -y # todo : add ppa
 sudo apt-get install appimagelauncher -y
