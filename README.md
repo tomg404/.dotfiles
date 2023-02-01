@@ -19,6 +19,7 @@
 
 ## TODOs
 ### Fix first
+* drop gdb peda and use gef instead
 * ~~clone instead of include peda (gdb)~~
 * drop nvim config and ~~use astronvim~~
 * auto setup conky
