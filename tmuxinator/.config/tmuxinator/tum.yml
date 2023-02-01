@@ -50,10 +50,9 @@ windows:
       panes:
         - editor:
         - test:
-  - RNDM: 
-      layout: tiled
+  - config: 
+      root: ~/.dotfiles/
+      layout: even-horizontal
       panes:
-        - neofetch --disable resolution de wm wm_theme theme icons
-        - btop
-        - tmuxinator version | toilet -f future --gay
-        - cmatrix
+        - ls -1
+        - tree --gitignore
