@@ -39,9 +39,6 @@ else
   export EDITOR='nvim'
 fi
 
-# source aliases
+# source aliases and environment variables
 source $ZDOTDIR/.zshaliases
-
-# source environment variables
 source $HOME/.zshenv
-

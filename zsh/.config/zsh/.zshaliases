@@ -1,18 +1,39 @@
-# Aliases
-alias zshconfig="nvim ~/.zshrc"
-alias ohmyzsh="nvim ~/.oh-my-zsh"
+###################################################
+###                A L I A S E S                ###
+###################################################
+
+# instant edit configs
+alias editzshconfig="nvim ~/.dotfiles/zsh/.config/zsh/.zshrc"
+alias editzshaliases="nvim ~/.dotfiles/zsh/.config/zsh/.zshaliases"
+alias editnvimconfig="nvim ~/.config/nvim/init.vim"
+
+# rebinds
 alias nv="nvim"
-alias gfc="git commit -a -m \"fast commit\" && git push"
+alias ls="exa"
+
+# programming / compilation stuff
+alias gpp="g++ -std=c++20 -Wall -Wextra" # always use c++20 standard and useful compilation flags
+alias gdb="gdb --quiet" # do not print version and disclaimer info at startup 
 alias odump="objdump -D -M intel"
-alias gdb="gdb -q"
-alias monitor_mode_on="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set monitor none && sudo ip link set wlp9s0 up"
-alias monitor_mode_off="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set type managed && sudo ip link set wlp9s0 up"
-alias nvimconfig="nvim $HOME/.config/nvim/init.vim"
-alias gpp="g++ -std=c++20 -Wall -Wextra"
+
+# git
+alias gfc="git commit -a -m \"fast commit\" && git push"
+
+# random
+alias tma="tmux attach -t tum"
+alias tmd="tmux detach"
+alias clipboard="xclip -selection clipboard" # copy terminal stuff with 'cat file | clipboard'
 alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/week"
 
-# For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
-alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest'
+# temporary
+alias monitor_mode_on="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set monitor none && sudo ip link set wlp9s0 up"
+alias monitor_mode_off="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set type managed && sudo ip link set wlp9s0 up"
+alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest' # For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
+
+
+###################################################
+###              F U N C T I O N S              ###
+###################################################
 
 # Little script to download videos from .m3u8 urls
 tum-live-dld () {
