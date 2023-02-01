@@ -1,6 +1,7 @@
 # Window configuration
 window:
   title: Terminal
+  opacity: 0.80
 
 # Cursor configuration
 cursor:
