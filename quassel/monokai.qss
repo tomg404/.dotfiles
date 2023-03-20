@@ -1,0 +1,425 @@
+/**
+ *    ___  _                           _
+ *   / _ \| |                         (_)
+ *  | / \ | |____,_______  ___ __  _   _
+ *  | | | | __  \ ___/ __\/ _` || '_ \| |
+ *  | \_/ | |_) | | |  __| (_| || | | | |
+ *   \___/|_____/_|  \___/\__,_||_| |_|_|
+ *
+ *      Quassel Theme
+ *
+ * Author: Roardom
+ * Based off of DarkMonokai by Zren (https://gist.github.com/Zren/2779042) as I've got no experience with qt/qss.
+ */
+
+/**
+ * Notes
+ *
+
+    This theme is designed for the Fusion theme and Breeze Dark icons. (Settings > Configure Quassel (F7) > Interface > Client Style)
+*/
+
+Palette {
+    /* Window colors */
+    window: #2b2b2b;
+    background: #212121;
+    foreground: #ffffff;
+
+    base: #131313;//21221b
+    alternate-base: #42403B;
+
+    tooltip-base: #440000;
+    tooltip-text: #0000ff;//
+
+    /* The following attributes should be done in a scale */
+    light: #444444; // Tab Borders, Scrollbar handle grips, Titled Panel border (Settings)
+    midlight: #333333; // ?
+    button: #292929; // Menu BG, Scrollbar and Button base.
+    mid: #252525; // Titled Panel border (Settings)
+    dark: #202020; // TreeView [-] and ... color (Also various borders in Windows Client Style)
+    shadow: #1d1d1d; // ?
+
+
+    /* Text colors */
+    text: white;
+    button-text: #B6B3AB;
+
+    //highlight: #00ff00;
+    //highlight-text: #000000;
+
+    /* Link colors */
+    link: #539FA3;
+    link-visited: #845B90;
+
+    /* New Messages Marker */
+    marker-line: rgb(237, 66, 69);
+}
+
+
+/* ----------------------------------------------------------------------------
+ QT Components
+---------------------------------------------------------------------------- */
+
+/* QMainWindow
+---------------------------------------------------------------------------- */
+
+QMainWindow {
+    background: rgb(54, 57, 63);
+    //background: rgb(47, 49, 54);
+    //background: transparent;
+    border: 0;
+}
+
+/* Widgets
+---------------------------------------------------------------------------- */
+
+QMainWindow QAbstractScrollArea {
+    border: 0;
+}
+
+/* QTreeView
+---------------------------------------------------------------------------- */
+// QTreeView#settingsTree -> Tree in the Settings popup.
+
+QTreeView, QTableView {
+    selection-background-color: transparent;
+    border: 0;
+    show-decoration-selected: 0;
+    padding-left: 8px;
+}
+
+QTreeView::item {
+    margin: 1px;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+QTreeView::item:selected {
+    background: rgb(57, 60, 67);
+    color: rgb(255, 255, 255);
+}
+
+QTreeView::item:!selected:hover {
+    background: rgb(51, 54, 60);
+    color: rgb(255, 255, 255);
+}
+
+QTreeView::item:focus {
+    border-width: 0 0 0 0;
+    outline: none;
+}
+
+QTreeView::item:active {
+    border: 0;
+    outline: none;
+}
+
+// QTreeView#settingsTree { background: #131313; }
+
+
+/* QScrollbar
+---------------------------------------------------------------------------- */
+
+QScrollBar {
+    background: transparent;
+    border-radius: 6px;
+}
+
+QScrollBar:vertical { width: 10px;  } 
+QScrollBar:horizontal { height: 10px; }
+QScrollBar::handle:vertical   { min-height: 75px; min-width:  8px; }
+QScrollBar::handle:horizontal { min-height:  8px; min-width: 75px; }
+QScrollBar::add-line , QScrollBar::sub-line { height: 0px; }
+
+QScrollBar::handle {
+    margin: 2px;
+    background: rgb(32, 34, 37);
+    border-radius: 3px;
+}
+
+/* Text Input Box
+---------------------------------------------------------------------------- */
+
+MultiLineEdit,
+QTextEdit {
+    border-radius: 8px;
+    padding: 4px;
+    background: rgb(64, 68, 75);
+    border: 0;
+    font-family: "segoe ui", emojione;
+}
+
+/* QDockWidget
+---------------------------------------------------------------------------- */
+
+QDockWidget {
+    font-size: 16px;
+    font-family: "segoe ui", emojione;
+    font-weight: bold;
+}
+
+QDockWidget::title {
+    padding: 8px;
+    margin-right: -2px;
+    background: rgb(47, 49, 54);
+    border-color: rgb(32, 34, 37);
+    border-style: solid;
+    border-width: 1px 0;
+}
+
+/* Splitter
+-------------------------------------------------------------------------- */
+
+QSplitter::handle:horizontal,
+QMainWindow::separator:horizontal {
+    background: rgb(47, 49, 54);
+} 
+QSplitter::handle:vertical,
+QMainWindow::separator:vertical{
+    background: rgb(54, 57, 63);
+}
+
+/* Menu Bar Items / Context Menus
+---------------------------------------------------------------------------- */
+QMenu {
+    margin: 8px;
+    border-radius: 6px;
+    background: rgb(24, 25, 28);
+}
+
+QMenu::item {
+    background: rgb(24, 25, 28);
+    padding: 12px;
+    border-width: 0;
+    border-radius: 4px;
+}
+
+QMenu::item:selected {
+    background-color: rgb(71, 82, 196);
+    color: white;
+}
+
+QMenu::indicator {
+    width: 20px;
+    margin-left: 16px;
+}
+
+/* Tooltips
+---------------------------------------------------------------------------- */
+
+QToolTip {
+    border-radius: 6px;
+    background: rgb(24, 25, 28);
+    color: #ffffff;
+    padding: 8px;
+}
+
+/* Tabs
+---------------------------------------------------------------------------- */
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabBar {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+QTabBar::tab {
+    min-width: 30px;
+    border-radius: 4px;
+    margin: 12px 0 12px 12px;
+    padding: 6px;
+}
+
+QTabBar::tab:selected {
+    background: rgb(79, 84, 92);
+    color: rgb(255, 255, 255);
+}
+
+QTabBar::tab:!selected {
+    color: rgb(185, 187, 190);
+}
+
+QTabBar::tab:!selected:hover {
+    background-color: rgb(40, 42, 46);
+    color: #aaa;
+}
+
+/* Drop downs
+---------------------------------------------------------------------------- */
+
+QComboBox {
+    background: rgb(47, 49, 54);
+    outline: none;
+    border: 1px solid rgb(32, 34, 37);
+    padding: 5px;
+    border-radius: 8px;
+}
+
+QComboBox::drop-down {
+    outline: none;
+    border-width: 0 0 0 1px;
+}
+
+/* Buttons
+---------------------------------------------------------------------------- */
+
+QToolButton {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+QToolButton:hover {
+    background: rgb(79, 94, 92);
+}
+
+QToolButton:pressed {
+    border-radius: 8px;
+}
+
+
+/* ----------------------------------------------------------------------------
+ Quassel Components
+---------------------------------------------------------------------------- */
+
+/* Topic Box
+---------------------------------------------------------------------------- */
+
+StyledLabel#topicLabel {
+    background: rgb(54, 57, 63);
+    padding: 7px;
+    font-family: "segoe ui", emojione;
+    font-size: 18px;
+    border-style: solid;
+    border-color: rgb(32, 34, 37);
+    border-width: 0 0 1px 0;
+}
+
+/* Topic Edit button */
+ResizingStackedWidget {
+    background: rgb(54, 57, 63);
+}
+
+/* Channel List
+---------------------------------------------------------------------------- */
+
+BufferView {
+    background: rgb(47, 49, 54);
+    margin: 0;
+    border: 0;
+}
+
+ChatListItem {
+    color: rgb(142, 146, 151);
+    font-family: "segoe ui", emojione;
+    font-size: 16px;
+    font-weight: bold
+}
+
+ChatListItem[state="inactive"]                       { color: rgb(79, 84, 92); }
+ChatListItem[state="channel-event"]                  { color: rgb(142, 146, 151); }
+ChatListItem[state="unread-message"]                 { color: white; }
+ChatListItem[state="highlighted"]                    { color: red; }
+ChatListItem[type="network", state="unread-message"] { color: white; }
+
+/* Nick List
+---------------------------------------------------------------------------- */
+
+NickView {
+    background: rgb(47, 49, 54);
+    margin: 0;
+    border: 0;
+}
+
+NickListItem {
+    background: rgb(47, 49, 54);
+    font-family: "segoe ui", emojione;
+    font-size: 16px;
+}
+
+/* Nick List */
+NickListItem[type="category"]           { color: rgb(142, 146, 151); font-weight: bold; }
+NickListItem[type="user"]               { color: #cccccc; }
+NickListItem[type="user", state="away"] { color: #666666; }
+
+/* Chat Messages
+---------------------------------------------------------------------------- */
+
+ChatView {
+    background: rgb(54, 57, 63);
+    padding-left: 16px;
+}
+
+ChatLine {
+    font-size: 16px;
+    font-family: "segoe ui", emojione;
+}
+
+ChatLine::timestamp {
+    color: rgb(114, 118, 125);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+ChatLine::url {
+    color: rgb(0, 175, 244);
+}
+
+/* Event colors */
+ChatLine#plain         { color: #F8F8F2; }
+ChatLine#notice        { color: #A6E22E; }
+ChatLine#action        { color: #F92672; font-weight: bold; font-style: italic; }
+ChatLine#nick          { color: #75715E; }
+ChatLine#mode          { color: #75715E; font-weight: bold; }
+ChatLine#join          { color: #75715E; }
+ChatLine#part          { color: #75715E; }
+ChatLine#quit          { color: #75715E; }
+ChatLine#kick          { color: #75715E; }
+ChatLine#kill          { color: #75715E; }
+ChatLine#server        { color: #A6E22E; }
+ChatLine#info          { color: #A6E22E; }
+ChatLine#error         { color: #FD971F; }
+ChatLine#daychange     { color: #A6E22E; }
+ChatLine#topic         { color: #FD971F; }
+ChatLine#netsplit-join { color: #996633; }
+ChatLine#netsplit-quit { color: #996633; }
+
+/* Sender */
+ChatLine::sender                      { font-weight: bold; }
+ChatLine::sender#plain[sender="self"] { color: #00FF00; }
+ChatLine::sender#plain[sender="00"]   { color: #A6BDD7; }
+ChatLine::sender#plain[sender="01"]   { color: #803E75; }
+ChatLine::sender#plain[sender="02"]   { color: #FF6800; }
+ChatLine::sender#plain[sender="03"]   { color: #800000; }
+ChatLine::sender#plain[sender="04"]   { color: #55FFFF; }
+ChatLine::sender#plain[sender="05"]   { color: #063811; }
+ChatLine::sender#plain[sender="06"]   { color: #00538A; }
+ChatLine::sender#plain[sender="07"]   { color: #53377A; }
+ChatLine::sender#plain[sender="08"]   { color: #93AA00; }
+ChatLine::sender#plain[sender="09"]   { color: #0000FF; }
+ChatLine::sender#plain[sender="0a"]   { color: #FF0000; }
+ChatLine::sender#plain[sender="0b"]   { color: #FF8E00; }
+ChatLine::sender#plain[sender="0c"]   { color: #FFFF00; }
+ChatLine::sender#plain[sender="0d"]   { color: #FF00FF; }
+ChatLine::sender#plain[sender="0e"]   { color: #FF8080; }
+ChatLine::sender#plain[sender="0f"]   { color: #808080; }
+
+/* Mirc Formatting */
+
+ChatLine[format="bold"]          { font-weight: bold;}
+ChatLine[format="italic"]        { font-style: italic; }
+ChatLine[format="underline"]     { font-style: underline; }
+ChatLine[format="strikethrough"] {font-style: strikethrough; }
+
+
+/* Mentions */
+
+ChatLine[label="highlight"] {
+    color: rgb(250, 168, 26);
+    background: rgb(73, 68, 60);
+}
