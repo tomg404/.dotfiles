@@ -9,7 +9,7 @@ alias editnvimconfig="nvim ~/.config/nvim/init.vim"
 
 # rebinds
 alias nv="nvim"
-alias ls="exa"
+alias ls="exa --icons"
 
 # programming / compilation stuff
 alias gpp="g++ -std=c++20 -Wall -Wextra" # always use c++20 standard and useful compilation flags
@@ -29,6 +29,7 @@ alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/wee
 alias monitor_mode_on="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set monitor none && sudo ip link set wlp9s0 up"
 alias monitor_mode_off="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set type managed && sudo ip link set wlp9s0 up"
 alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest' # For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
+alias python='python3'
 
 
 ###################################################
