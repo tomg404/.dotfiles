@@ -19,9 +19,10 @@
 
 ## TODOs
 ### Fix first
-* drop gdb peda and use gef instead
+* ~~drop gdb peda and use gef instead~~
 * ~~clone instead of include peda (gdb)~~
-* drop nvim config and ~~use astronvim~~
+* ~~drop nvim config~~ and ~~use astronvim~~
+* renew astronvim config
 * auto setup conky
 * ~~split aliases from `.zshrc`~~
 * ~~add proper tmux (tmuxinator) config~~
