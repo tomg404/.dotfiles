@@ -221,15 +221,21 @@ tiling_drag modifier titlebar
 # | |/\| | | '_ \ / _` |/ _ \ \ /\ / / __|
 # \  /\  / | | | | (_| | (_) \ V  V /\__ \
 #  \/  \/|_|_| |_|\__,_|\___/ \_/\_/ |___/
-                                        
-for_window [title="Bluetooth"] floating enable
-for_window [title="Volume Control"] floating enable
-for_window [class="vlc"] floating enable
-for_window [title="Thunar"] floating enable
-for_window [class="iwgtk"] floating enable
-for_window [title="Calculator"] floating enable
-for_window [title="Synology Drive Client"] floating enable
-for_window [title="KeePassXC"] floating enable
+#
+# get window class with `xprop | grep WM_CLASS`
+# first string is instance, second is class
 
-assign [title="Synology Drive Client"] $ws9
-assign [title="KeePassXC"] $ws9
+set $synology_class "cloud-drive-ui"
+set $keepass_class "KeePassXC"
+
+for_window [title="Bluetooth"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="vlc"] floating enable
+for_window [class="Thunar"] floating enable
+for_window [class="iwgtk"] floating enable
+for_window [class="gnome-calculator"] floating enable
+for_window [class=$synology_class] floating enable
+for_window [class=$keepass_class] floating enable
+
+assign [class=$synology_class] $ws9
+assign [class=$keepass_class] $ws9
