@@ -134,15 +134,15 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: "
-set $ws2 "2: 󰖟"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
+set $ws2 "2: 󰖟" 
+set $ws3 "3: 󱅌"
+set $ws4 "4: 󱅍"
+set $ws5 "5: 󱅎"
+set $ws6 "6: 󱅏"
+set $ws7 "7: 󰝮"
+set $ws8 "8: "
 set $ws9 "9: "
-set $ws10 "0: "
+set $ws10 "10: "
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -155,6 +155,9 @@ bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
+
+# switch to last workspace
+bindsym $mod+Tab workspace back_and_forth
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -240,3 +243,4 @@ for_window [class=$keepass_class] floating enable
 
 assign [class=$synology_class] $ws9
 assign [class=$keepass_class] $ws9
+assign [class="discord"] $ws8
