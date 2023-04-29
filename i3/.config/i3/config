@@ -74,6 +74,9 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Shift+d exec --no-startup-id "rofi -show drun -run-command 'gksudo {cmd}'"
 
+# disable keyboard (xtrlock)
+bindsym $mod+o exec --no-startup-id xtrlock
+
 # make screenshot
 bindsym Print exec flameshot gui
 
