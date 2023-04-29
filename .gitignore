@@ -4,4 +4,4 @@ __pypackages__/
 
 ### ZSH ###
 .zcompdump*
-zsh/.config/zsh/.zsh_history
+zsh/.config/zsh/.zhistory
