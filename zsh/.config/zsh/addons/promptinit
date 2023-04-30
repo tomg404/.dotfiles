@@ -1,0 +1,17 @@
+# Prompt (see https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html)
+
+precmd() { print "" }
+
+NEWLINE=$'\n'
+TIME="%F{white}[%*]%f"
+
+PROMPT_USER="%F{red}%n%f"
+PROMPT_HOST="%F{green}%m%f"
+PROMPT_USER_HOST="${PROMPT_USER}%F{white}@%f${PROMPT_HOST}"
+
+PROMPT_CWD_STRING="%F{yellow}%~%f"
+PROMPT_CWD="%F{white}[%f${PROMPT_CWD_STRING}%F{white}]%f"
+
+PROMPT_COMMAND_SIGN="%F{blue}$%f"
+
+PROMPT="${PROMPT_USER_HOST} ${PROMPT_CWD} ${TIME} ${NEWLINE}${PROMPT_COMMAND_SIGN} "

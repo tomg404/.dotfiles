@@ -1,33 +1,15 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.config/oh-my-zsh"
-plugins=(
-  git
-  zsh-autosuggestions  
-)
-source $ZSH/oh-my-zsh.sh
-
-# Set theme. See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="ys"
-
-# Case / hyphen sensitive completion
-CASE_SENSITIVE="false"
-HYPHEN_INSENSITIVE="true"
-
-# Auto update behavior
-zstyle ':omz:update' mode reminder
-
-# Disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
-
-# Enable command auto-correction.
-ENABLE_CORRECTION="false"
-
-source $ZSH/oh-my-zsh.sh
+# .zshrc - Should be used for the shell configuration and for executing commands.
+# Really good guide to configure everything without oh-my-zsh
 
 ## User configuration
+
+# Source aliases and environment variables
+source $ZDOTDIR/.zshaliases
+source $HOME/.zshenv
+
+# Zsh options (see https://zsh.sourceforge.io/Doc/Release/Options.html)
+setopt AUTO_CD
+setopt HIST_SAVE_NO_DUPS
 
 # Set your language environment
 export LANG=en_US.UTF-8
@@ -39,6 +21,11 @@ else
   export EDITOR='nvim'
 fi
 
-# source aliases and environment variables
-source $ZDOTDIR/.zshaliases
-source $HOME/.zshenv
+# Load files
+fpath=($ZDOTDIR/addons $fpath)
+autoload -Uz compinit; compinit
+autoload -Uz promptinit; promptinit
+
+# Source plugins
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
