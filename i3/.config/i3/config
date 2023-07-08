@@ -49,7 +49,7 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # set the wallpaper
-exec_always --no-startup-id feh --bg-scale $HOME/.dotfiles/wallpapers/active.jpeg
+exec_always --no-startup-id feh --bg-scale $HOME/.dotfiles/wallpapers/arch-crt.jpeg
 
 
 #  _   __          ______ _           _ _                 
