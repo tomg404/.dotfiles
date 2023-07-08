@@ -1,5 +1,4 @@
 # .zshrc - Should be used for the shell configuration and for executing commands.
-# Really good guide to configure everything without oh-my-zsh
 
 ## User configuration
 
@@ -11,6 +10,10 @@ source $HOME/.zshenv
 setopt AUTO_CD
 setopt HIST_SAVE_NO_DUPS
 
+# Custom keybinds
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # Set your language environment
 export LANG=en_US.UTF-8
 
@@ -19,6 +22,11 @@ if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
   export EDITOR='nvim'
+fi
+
+# add ~/.local/bin to path
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
 fi
 
 # Load files
