@@ -9,7 +9,7 @@ alias editnvimconfig="nvim ~/.config/nvim/init.vim"
 
 # rebinds
 alias nv="nvim"
-alias ls="exa --icons"
+alias ls="eza --icons"
 
 # programming / compilation stuff
 alias gpp="g++ -std=c++20 -Wall -Wextra" # always use c++20 standard and useful compilation flags
