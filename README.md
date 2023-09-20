@@ -1,33 +1,19 @@
-[![Makefile CI](https://github.com/tomg404/.dotfiles/actions/workflows/makefile.yml/badge.svg)](https://github.com/tomg404/.dotfiles/actions/workflows/makefile.yml)
-
 # My dotfiles
-**Warning: None of the auto setups (using `make`) are properly tested yet. Use with caution!**
 
 ## Shell
-* zsh
-* alacritty
-* tmux / tmuxinator
+* `zsh`
+* `alacritty`
+* `tmux` / `tmuxinator`
 
 ## Sync & Backup
-* Synology Drive Client
-* Manual installation: https://www.synology.com/en-global/support/download
-* Deja-Dup
-
-## Obsidian
-* https://gist.github.com/shaybensasson/3e8e49af92d7e5013fc77da22bd3ae4c
+* Synology Drive Client (AUR)
 
 ---
 
 ## TODOs
 ### Fix first
-* ~~drop gdb peda and use gef instead~~
-* ~~clone instead of include peda (gdb)~~
-* ~~drop nvim config~~ and ~~use astronvim~~
-* renew astronvim config
-* auto setup conky
-* ~~split aliases from `.zshrc`~~
-* ~~add proper tmux (tmuxinator) config~~
+* renew nvim config
+* dunst config
+
 ### Fix some time
-* ~~add alacritty~~
-* ~~add neofetch~~
 * secrets management
