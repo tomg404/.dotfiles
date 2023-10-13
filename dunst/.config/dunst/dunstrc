@@ -289,7 +289,7 @@
     mouse_right_click = close_all
 
     # Defines color of the frame around the notification window.
-    frame_color = "#8AADF4"
+    frame_color = "#b7bdf8"
 
     # Define a color for the separator.
     # possible values are:
