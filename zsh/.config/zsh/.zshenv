@@ -2,7 +2,7 @@
 
 # Basic stuff
 export EDITOR=nvim
-export VISUAL=code
+export VISUAL=nvim
 
 # XDG variables
 export XDG_CONFIG_HOME="$HOME/.config"
