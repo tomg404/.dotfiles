@@ -1,0 +1,13 @@
+# /home/tom/.config/tmuxinator/main.yml
+
+name: bx
+root: ~/Documents/be
+
+windows:
+  - pwns:
+
+  - debugging:
+
+  - ssh tunnel:
+
+  - docker:
