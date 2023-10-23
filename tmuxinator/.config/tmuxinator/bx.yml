@@ -1,7 +1,7 @@
 # /home/tom/.config/tmuxinator/main.yml
 
 name: bx
-root: ~/Documents/be
+root: ~/Documents/ctf/bx2
 
 windows:
   - pwns:
