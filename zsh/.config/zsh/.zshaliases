@@ -20,16 +20,18 @@ alias odump="objdump -D -M intel"
 # git
 alias gfc="git commit -a -m \"fast commit\" && git push"
 
-# random
-alias tma="tmux attach -t tum"
+# tmux
+alias tma="tmux attach -t"
 alias tmd="tmux detach"
+
+# copy to ...
 alias clipboard="xclip -selection clipboard" # copy terminal stuff with 'cat file | clipboard'
+alias pastebin="curl -F 'file=@-' 0x0.st"
+
+# random
 alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/week"
 
 # temporary
-alias monitor_mode_on="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set monitor none && sudo ip link set wlp9s0 up"
-alias monitor_mode_off="sudo ip link set wlp9s0 down && sudo iw wlp9s0 set type managed && sudo ip link set wlp9s0 up"
-alias run-xv6='sudo docker run -it -v `pwd`:/home gitlab.lrz.de:5005/gbs-cm/docker-setup/gbs-xv6:latest' # For GBS homework - DIFFERENCE BETWEEN SINGLE AND DOUBLE QUOTES
 alias python='python3'
 
 
