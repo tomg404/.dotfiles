@@ -5,7 +5,7 @@
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # settings. low / critical battery thresholds (range: 0-100)
-low=80
+low=15
 critical=5
 icon_path="/usr/share/icons/Papirus/48x48/status/battery-low.svg"
 
