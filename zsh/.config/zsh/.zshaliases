@@ -3,24 +3,19 @@
 ###################################################
 
 # instant edit configs
-alias editzshconfig="nvim ~/.dotfiles/zsh/.config/zsh/.zshrc"
-alias editzshaliases="nvim ~/.dotfiles/zsh/.config/zsh/.zshaliases"
-alias editnvimconfig="nvim ~/.config/nvim/init.vim"
+alias edit_zshconfig="$EDITOR ~/.dotfiles/zsh/.config/zsh/.zshrc"
+alias edit_zshaliases="$EDITOR ~/.dotfiles/zsh/.config/zsh/.zshaliases"
 
 # rebinds
 alias nv="nvim"
 alias ls="eza --icons=always --color=always"
 alias lss="/usr/bin/ls"
 
-# programming / compilation stuff
-alias gpp="g++ -std=c++20 -Wall -Wextra" # always use c++20 standard and useful compilation flags
-alias gdb="gdb --quiet" # do not print version and disclaimer info at startup 
-alias odump="objdump -D -M intel"
-
 # git
 alias gfc="git commit -a -m \"fast commit\" && git push"
 
 # tmux
+alias t="tmux new-session -A -s default"
 alias tma="tmux attach -t"
 alias tmd="tmux detach"
 
@@ -33,6 +28,12 @@ alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/wee
 
 # temporary
 alias python='python3'
+
+# kitty specific aliases
+if [[ $TERM = 'xterm-kitty' && -n '$KITTY_INSTALLATION_DIR' ]] ; then
+    alias kssh='kitten ssh'
+    alias icat='kitten icat'
+fi
 
 
 ###################################################
