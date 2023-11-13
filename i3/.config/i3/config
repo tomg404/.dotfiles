@@ -49,6 +49,9 @@ exec --no-startup-id nm-applet
 # start dunst notification daemon
 exec --no-startup-id dunst
 
+# start thunar (automounting)
+exec --no-startup-id thunar --daemon
+
 # start picom compositor
 exec_always --no-startup-id picom
 
@@ -77,12 +80,16 @@ bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start rofi and rofi with root
+# start rofi
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Shift+d exec --no-startup-id "rofi -show drun -run-command 'gksudo {cmd}'"
+bindsym $mod+c exec --no-startup-id networkmanager_dmenu
 
 # disable keyboard (xtrlock)
 bindsym $mod+o exec --no-startup-id xtrlock
+
+# hibernate system
+bindsym XF86Favorites exec systemctl hibernate
 
 # make screenshot
 bindsym Print exec flameshot gui
@@ -242,6 +249,7 @@ tiling_drag modifier titlebar
 set $synology_class "cloud-drive-ui"
 set $keepass_class "KeePassXC"
 
+for_window [class="Nm-connection-editor"] floating enable
 for_window [title="Bluetooth"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="vlc"] floating enable
