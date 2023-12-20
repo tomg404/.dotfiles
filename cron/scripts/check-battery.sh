@@ -29,12 +29,12 @@ if [ "$state" = "Discharging" ] ; then
     
   # if battery discharging and below low level then send notification
   if [ $battery -gt $critical ] && [ $battery -le $low ] && [ $notified -eq 0 ] ; then
-    notify-send -a "Battery" "Low" "Plugin to Recharge" --icon="$icon_path"
+    dunstify --appname="Battery" --icon="$icon_path" "Low" "Plugin to Recharge"
     let notified=1
 
   # if battery discharging and below critical level then send notification and wait for user action
   elif [ $battery -le $critical ] ; then
-    notify-send -a "Battery" "Critically low" "Backup Data or Plugin to Recharge" --icon="$icon_path" --urgency=critical --wait
+    dunstify --appname="Battery" --icon="$icon_path" --urgency=critical --wait "Critically low" "Backup Data or Plugin to Recharge"
     
   fi
 
