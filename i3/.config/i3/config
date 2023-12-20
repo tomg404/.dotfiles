@@ -40,7 +40,7 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- "$XDG_CONFIG_HOME/i3/i3lock/lock.sh"
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -59,7 +59,12 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # set the wallpaper
-exec_always --no-startup-id feh --bg-scale $HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png
+exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png
+
+# startup applications in certain workspaces
+exec --no-startup-id i3-msg 'workspace number 1; exec /usr/bin/firefox'
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/synology-drive'
+exec --no-startup-id i3-msg 'exec /usr/bin/keepassxc'
 
 
 #  _   __          ______ _           _ _                 
@@ -86,7 +91,9 @@ bindsym $mod+Shift+d exec --no-startup-id "rofi -show drun -run-command 'gksudo 
 bindsym $mod+c exec --no-startup-id networkmanager_dmenu
 
 # disable keyboard (xtrlock)
+# lock screen (i3lock)
 bindsym $mod+o exec --no-startup-id xtrlock
+bindsym $mod+p exec --no-startup-id loginctl lock-session
 
 # hibernate system
 bindsym XF86Favorites exec systemctl hibernate
