@@ -3,13 +3,15 @@
 ###################################################
 
 # instant edit configs
-alias edit_zshconfig="$EDITOR ~/.dotfiles/zsh/.config/zsh/.zshrc"
-alias edit_zshaliases="$EDITOR ~/.dotfiles/zsh/.config/zsh/.zshaliases"
+alias edit_zshconfig="$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc"
+alias edit_zshaliases="$EDITOR $XDG_CONFIG_HOME/zsh/.zshaliases"
+alias edit_zshenv="$EDITOR $XDG_CONFIG_HOME/zsh/.zshenv"
 
 # rebinds
 alias nv="nvim"
 alias ls="eza --icons=always --color=always"
 alias lss="/usr/bin/ls"
+alias grep="grep --color=always"
 
 # git
 alias gfc="git commit -a -m \"fast commit\" && git push"
@@ -18,21 +20,28 @@ alias gfc="git commit -a -m \"fast commit\" && git push"
 alias t="tmux new-session -A -s default"
 alias tma="tmux attach -t"
 alias tmd="tmux detach"
+alias tml="tmux list-sessions"
+alias tmn="tmux new-session -s"
 
 # copy to ...
 alias clipboard="xclip -selection clipboard" # copy terminal stuff with 'cat file | clipboard'
+alias clip="clipboard"
 alias pastebin="curl -F 'file=@-' 0x0.st"
 
 # random
 alias cal="firefox-esr --new-window https://outlook.live.com/calendar/0/view/week"
 
+# keep $HOME clean rebinds (xdg-ninja)
+alias nvidia-settings="nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings"
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+
 # temporary
 alias python='python3'
 
 # kitty specific aliases
-if [[ $TERM = 'xterm-kitty' && -n '$KITTY_INSTALLATION_DIR' ]] ; then
-    alias kssh='kitten ssh'
-    alias icat='kitten icat'
+if [[ -n "$KITTY_INSTALLATION_DIR" ]] ; then
+    alias kssh="kitten ssh"
+    alias icat="kitten icat"
 fi
 
 
@@ -100,4 +109,26 @@ tum-live-grep-m3u8 () {
 # Weather
 weather () {
     curl "wttr.in/$1?format=3"
+}
+
+# Print a motd in non-login shell
+motd-interactive-shell () {
+  motd_timeout=86400 # 24 hours
+  timestamp_file="$XDG_CACHE_HOME/interactive-shell-motd"
+
+  if [[ -e "$timestamp_file" ]] ; then
+    last_motd_timestamp=$(cat "$timestamp_file")
+    current_timestamp=$(date +%s)
+    time_diff=$((current_timestamp - last_motd_timestamp))
+    #echo "time until next motd:" $time_diff
+
+    if [[ "$time_diff" -ge $motd_timeout ]] ; then
+      echo "$current_timestamp" > "$timestamp_file"
+      cat /etc/motd
+    fi
+  else
+    # if timestamp file doesn't exist, create it
+    date +%s > "$timestamp_file"
+    cat /etc/motd
+  fi
 }
