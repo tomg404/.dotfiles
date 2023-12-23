@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# https://github.com/classy-giraffe/easy-arch/blob/main/easy-arch.sh
-# https://www.dwarmstrong.org/archlinux-install/
+# Disclaimer: This script is my OWN arch bootstrap script
+# and configures the system exactly how I want it to be.
+# So it may contain things you do not like.
+# The script is adapted from various other arch install
+# scripts and guides. Most notably:
+# - https://github.com/classy-giraffe/easy-arch/
+# - https://www.dwarmstrong.org/archlinux-install/
 
 # Text Formatting
 RESET='\033[0m'
@@ -11,8 +16,6 @@ UNDERLINE='\033[4m'
 BLINK='\033[5m'
 INVERSE='\033[7m'
 STRIKE='\033[9m'
-
-# Text Colors (Foreground)
 BLACK='\033[0;30m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -21,8 +24,6 @@ BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[0;37m'
-
-# Background Colors
 BG_BLACK='\033[40m'
 BG_RED='\033[41m'
 BG_GREEN='\033[42m'
@@ -31,6 +32,10 @@ BG_BLUE='\033[44m'
 BG_MAGENTA='\033[45m'
 BG_CYAN='\033[46m'
 BG_WHITE='\033[47m'
+
+#############################
+# STATUS / HELPER FUNCTIONS #
+#############################
 
 status_msg() {
     STATUS_COLOR="$1"
@@ -63,6 +68,12 @@ yn_prompt() {
     done
 }
 
+##########################
+# INSTALLATION FUNCTIONS #
+##########################
+
+# Check if system is booted in UEFI mode. If booted
+# in BIOS mode end script.
 check_uefi() {
     ls /sys/firmware/efi/efivars > /dev/null 2>&1
 
@@ -70,6 +81,7 @@ check_uefi() {
         success_msg "booted in uefi mode"
     else
         error_msg "booted in bios mode"
+        exit 1
     fi
 }
 
@@ -94,6 +106,10 @@ update_system_clock() {
     success_msg 'done'
 }
 
+# This function selects the main disk and creates
+# two partitions: EFI and LUKS. The LUKS partition is
+# formatted with the BTRFS filesystem and volumes are
+# created and mounted.
 setup_filesystem() {
     # select disk
     info_msg "available disks"
@@ -216,7 +232,7 @@ install_base_system() {
         base base-devel \
         ${MICROCODE} \
         btrfs-progs \
-        linux linux-lts linux-firmware \
+        linux linux-firmware \
         grub efibootmgr \
         cryptsetup \
         man-db neovim \
@@ -260,17 +276,48 @@ configure_system() {
     echo "LANG=$LOCALE" > /etc/locale.conf
     echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
 
+    # setup users
+    info_msg "enter root password:"
+    read -r ROOT_PASSWORD
+    echo "root:$ROOT_PASSWORD" | chpasswd
+
+    echo "%wheel ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/wheel
+    info_msg "enter username:"
+    read -r USER_NAME
+    useradd -m -G wheel -s /bin/bash "$USER_NAME"
+
+    info_msg "enter user password:"
+    read -r USER_PASSWORD
+    echo "$USER_NAME:$USER_PASSWORD" | chpasswd
+
+    # setup keyfile
+    info_msg "generating keyfile"
+    KEYFILE="/luks_keyfile.bin"
+    dd bs=512 count=4 iflag=fullblock if=/dev/random of=$KEYFILE
+    chmod 600 $KEYFILE
+    cryptsetup luksAddKey $CRYPTROOT $KEYFILE
+
     # setup mkinitcpio
-    echo "FILES=()" > /etc/mkinitcpio.conf # maybe setup keyfile
-    echo "MODULES=()" >> /etc/mkinitcpio.conf 
+    info_msg "generating initramfs"
+    echo "FILES=($KEYFILE)" > /etc/mkinitcpio.conf
+    echo "MODULES=(btrfs)" >> /etc/mkinitcpio.conf 
     echo "HOOKS=(systemd keyboard autodetect modconf block sd-vconsole sd-encrypt filesystems fsck)" >> /etc/mkinitcpio.conf
-    mkinitcpio -P
+    mkinitcpio -P # recreate initramfs
 
     # configure grub
+    info_msg "configuring grub"
     UUID=$(blkid -s UUID -o value $CRYPTROOT)
-    sed -i "\,^GRUB_CMDLINE_LINUX=\"\",s,\",&rd.luks.name=$UUID=cryptroot root=$BTRFS," /mnt/etc/default/grub
+    sed -i "\,^GRUB_CMDLINE_LINUX=\"\",s,\",&rd.luks.name=$UUID=cryptroot root=$BTRFS," /etc/default/grub # `\,` at the start changes the default sed delimiter (`/`) to `,`
+    info_msg "installing grub"
+    grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB
+    grub-mkconfig -o /boot/grub/grub.cfg
 
+    # configure pacman
+    info_msg "configuring pacman"
+    sed -i "s/#ParallelDownloads.*/ParallelDownloads = 10/"
+    sed -i "s/#Color/Color\nILoveCandy/"
 
+    # enabling services
 }
 
 check_uefi;
