@@ -228,7 +228,7 @@ install_base_system() {
         exit 1
     fi
 
-    pacstrap /mnt \
+    pacstrap -K /mnt \
         base base-devel \
         ${MICROCODE} \
         btrfs-progs \
@@ -241,28 +241,29 @@ install_base_system() {
         sudo tmux
 
     genfstab -U -p /mnt >> /mnt/etc/fstab
+    success_msg "done installing base system"
 }
 
 configure_system() {
-    arch-chroot /mnt /bin/bash
+    #arch-chroot /mnt /bin/bash
 
     # set timezone and update systemclock
-    ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-    hwclock --systohc
+    arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+    arch-chroot /mnt hwclock --systohc
 
     # set hostname
     HOSTNAME="arch"
-    echo "$HOSTNAME" > /etc/hostname
+    echo "$HOSTNAME" > /mnt/etc/hostname
 
     # add matching entries to /etc/hosts
-    echo "127.0.0.1 $HOSTNAME" > /etc/hosts
-    echo "::1 $HOSTNAME" > /etc/hosts
+    echo "127.0.0.1 $HOSTNAME" > /mnt/etc/hosts
+    echo "::1 $HOSTNAME" > /mnt/etc/hosts
 
     # set locale
     LOCALE="en_US.UTF-8"
-    sed -i "s/^#\(${LOCALE}\)/\1/" /etc/locale.gen
-    echo "LANG=${LOCALE}" > /etc/locale.conf
-    locale-gen
+    sed -i "s/^#\(${LOCALE}\)/\1/" /mnt/etc/locale.gen
+    echo "LANG=${LOCALE}" > /mnt/etc/locale.conf
+    arch-chroot /mnt locale-gen
     
     # set system-wide environment variables
     # echo "KEY=val" > /etc/environment
@@ -272,50 +273,50 @@ configure_system() {
 
     # configure locale and console keymap
     KEYMAP="us"
-    sed -i "/^#$LOCALE/s/^#//" /etc/locale.gen
-    echo "LANG=$LOCALE" > /etc/locale.conf
-    echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
+    sed -i "/^#$LOCALE/s/^#//" /mnt/etc/locale.gen
+    echo "LANG=$LOCALE" > /mnt/etc/locale.conf
+    echo "KEYMAP=$KEYMAP" > /mnt/etc/vconsole.conf
 
     # setup users
     info_msg "enter root password:"
     read -r ROOT_PASSWORD
-    echo "root:$ROOT_PASSWORD" | chpasswd
+    echo "root:$ROOT_PASSWORD" | arch-chroot /mnt chpasswd
 
     echo "%wheel ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/wheel
     info_msg "enter username:"
     read -r USER_NAME
-    useradd -m -G wheel -s /bin/bash "$USER_NAME"
+    arch-chroot /mnt useradd -m -G wheel -s /bin/bash "$USER_NAME"
 
     info_msg "enter user password:"
     read -r USER_PASSWORD
-    echo "$USER_NAME:$USER_PASSWORD" | chpasswd
+    echo "$USER_NAME:$USER_PASSWORD" | arch-chroot chpasswd
 
     # setup keyfile
     info_msg "generating keyfile"
     KEYFILE="/luks_keyfile.bin"
-    dd bs=512 count=4 iflag=fullblock if=/dev/random of=$KEYFILE
-    chmod 600 $KEYFILE
-    cryptsetup luksAddKey $CRYPTROOT $KEYFILE
+    dd bs=512 count=4 iflag=fullblock if=/dev/random of=/mnt/$KEYFILE
+    chmod 600 /mnt/$KEYFILE
+    cryptsetup luksAddKey $CRYPTROOT /mnt/$KEYFILE
 
     # setup mkinitcpio
     info_msg "generating initramfs"
-    echo "FILES=($KEYFILE)" > /etc/mkinitcpio.conf
-    echo "MODULES=(btrfs)" >> /etc/mkinitcpio.conf 
-    echo "HOOKS=(systemd keyboard autodetect modconf block sd-vconsole sd-encrypt filesystems fsck)" >> /etc/mkinitcpio.conf
-    mkinitcpio -P # recreate initramfs
+    echo "FILES=($KEYFILE)" > /mnt/etc/mkinitcpio.conf
+    echo "MODULES=(btrfs)" >> /mnt/etc/mkinitcpio.conf 
+    echo "HOOKS=(systemd keyboard autodetect modconf block sd-vconsole sd-encrypt filesystems fsck)" >> /mnt/etc/mkinitcpio.conf
+    arch-chroot /mnt mkinitcpio -P # recreate initramfs
 
     # configure grub
     info_msg "configuring grub"
     UUID=$(blkid -s UUID -o value $CRYPTROOT)
-    sed -i "\,^GRUB_CMDLINE_LINUX=\"\",s,\",&rd.luks.name=$UUID=cryptroot root=$BTRFS," /etc/default/grub # `\,` at the start changes the default sed delimiter (`/`) to `,`
+    sed -i "\,^GRUB_CMDLINE_LINUX=\"\",s,\",&rd.luks.name=$UUID=cryptroot root=$BTRFS," /mnt/etc/default/grub # `\,` at the start changes the default sed delimiter (`/`) to `,`
     info_msg "installing grub"
-    grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB
-    grub-mkconfig -o /boot/grub/grub.cfg
+    arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB
+    arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
     # configure pacman
     info_msg "configuring pacman"
-    sed -i "s/#ParallelDownloads.*/ParallelDownloads = 10/"
-    sed -i "s/#Color/Color\nILoveCandy/"
+    sed -i "s/^#ParallelDownloads.*/ParallelDownloads = 10/"
+    sed -i "s/^#Color/Color\nILoveCandy/"
 
     # enabling services
 }
