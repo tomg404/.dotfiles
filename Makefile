@@ -1,20 +1,13 @@
-scripts = installation-scripts
 
-all: install
+DIRS=$(find . -maxdepth 2 -type d -name ".config" ! -path "./archive/*" -printf "%h ")
+all:
+	echo $(DIRS)
 
-install:
-	sh $(scripts)/install-core.sh
-	sh $(scripts)/install-fonts.sh
-	sh $(scripts)/install-zsh-and-term.sh
-
-core:
-	sh $(scripts)/install-core.sh
+stow-all:
+	stow --verbose --target=$$HOME --stow $(DIRS) --simulate
 	
-fonts:
-	sh $(scripts)/install-fonts.sh
-	
-term:
-	sh $(scripts)/install-zsh-and-term.sh
+unstow-all:
+	stow --verbose --target=$$HOME --delete --simulate
 
-clean:
-
+cron:
+	crontab -u $USER cron 
