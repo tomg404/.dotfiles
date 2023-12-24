@@ -79,9 +79,10 @@ pw_prompt() {
     MESSAGE="$1"
     info_msg "$MESSAGE" "input"
     read -r -s "PASSWORD"
+    echo ""
     info_msg "enter again: "
     read -r -s "PASSWORD_AGAIN"
-    if [[ "$PASSWORD" -ne "$PASSWORD_AGAIN" ]]; then
+    if [[ "$PASSWORD" != "$PASSWORD_AGAIN" ]]; then
         error_msg "passwords don't match, please try again!"
         return 1
     fi
@@ -92,7 +93,7 @@ welcome_msg() {
     # toilet -f smbraille "text" --rainbow
     echo -ne "[0;1;35;95m╺┳[0;1;31;91m╸┏[0;1;33;93m━┓[0;1;32;92m┏┳[0;1;36;96m┓╻[0;1;34;94m┏━[0;1;35;95m┓[0m   [0;1;33;93m╻┏[0;1;32;92m┓╻[0;1;36;96m┏━[0;1;34;94m┓╺[0;1;35;95m┳╸[0;1;31;91m┏━[0;1;33;93m┓╻[0m  [0;1;36;96m╻[0m     [0;1;31;91m┏━[0;1;33;93m┓┏[0;1;32;92m━╸[0;1;36;96m┏━[0;1;34;94m┓╻[0;1;35;95m┏━[0;1;31;91m┓╺[0;1;33;93m┳╸[0m\n [0;1;31;91m┃[0m [0;1;33;93m┃[0m [0;1;32;92m┃[0;1;36;96m┃┃[0;1;34;94m┃[0m [0;1;35;95m┗━[0;1;31;91m┓[0m   [0;1;32;92m┃┃[0;1;36;96m┗┫[0;1;34;94m┗━[0;1;35;95m┓[0m [0;1;31;91m┃[0m [0;1;33;93m┣━[0;1;32;92m┫┃[0m  [0;1;34;94m┃[0m     [0;1;33;93m┗━[0;1;32;92m┓┃[0m  [0;1;34;94m┣┳[0;1;35;95m┛┃[0;1;31;91m┣━[0;1;33;93m┛[0m [0;1;32;92m┃[0m\n [0;1;33;93m╹[0m [0;1;32;92m┗[0;1;36;96m━┛[0;1;34;94m╹[0m [0;1;35;95m╹[0m [0;1;31;91m┗━[0;1;33;93m┛[0m   [0;1;36;96m╹╹[0m [0;1;34;94m╹[0;1;35;95m┗━[0;1;31;91m┛[0m [0;1;33;93m╹[0m [0;1;32;92m╹[0m [0;1;36;96m╹┗[0;1;34;94m━╸[0;1;35;95m┗━[0;1;31;91m╸[0m   [0;1;32;92m┗━[0;1;36;96m┛┗[0;1;34;94m━╸[0;1;35;95m╹┗[0;1;31;91m╸╹[0;1;33;93m╹[0m   [0;1;36;96m╹[0m\n"
     yn_prompt "start installation?"
-    if [[ @? -eq 1 ]]; then
+    if [[ $? -eq 1 ]]; then
         exit 1
     fi
 }
@@ -145,7 +146,7 @@ setup_filesystem() {
     AVAILABLE_DISKS="$(fdisk -l | grep -e "/dev/.*:" --color=always)"
     printf "%s\n" "$AVAILABLE_DISKS"
 
-    info_msg "input disk to use (full path):" "input"
+    info_msg "input disk to use (full path): " "input"
     read -r DISK
 
     ls $DISK > /dev/null 2>&1
@@ -156,14 +157,15 @@ setup_filesystem() {
 
     # delete old partition layout
     info_msg "wiping $DISK"
-    wipefs --all --force $DISK
-    #sgdisk --zap-all --clear $DISK
-    sgdisk -Zo $DISK
-    partprobe $DISK
+    wipefs --all --force $DISK > /dev/null
+    #sgdisk --zap-all --clear $DISK > /dev/null 2>&1
+    sgdisk -Zo $DISK > /dev/null
+    partprobe $DISK > /dev/null
 
     # fill disk with random data
     if yn_prompt "overwrite data?" ; then
         cryptsetup open --type plain -d /dev/urandom $DISK CRYPTROOT
+        info_msg "overwriting ..."
         dd if=/dev/zero of=/dev/mapper/CRYPTROOT bs=1M status=progress oflag=direct
         cryptsetup close CRYPTROOT
     fi
