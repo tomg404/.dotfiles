@@ -80,8 +80,9 @@ pw_prompt() {
     info_msg "$MESSAGE" "input"
     read -r -s "PASSWORD"
     echo ""
-    info_msg "enter again: "
+    info_msg "enter again: " "input"
     read -r -s "PASSWORD_AGAIN"
+    echo ""
     if [[ "$PASSWORD" != "$PASSWORD_AGAIN" ]]; then
         error_msg "passwords don't match, please try again!"
         return 1
@@ -96,6 +97,11 @@ welcome_msg() {
     if [[ $? -eq 1 ]]; then
         exit 1
     fi
+}
+
+en_service() {
+    info_msg "systemctl enable $1"
+    arch-chroot /mnt systemctl enable "$1" --root /mnt > /dev/null
 }
 
 ##########################
@@ -258,17 +264,16 @@ install_base_system() {
         exit 1
     fi
 
+    MAIN_KERNEL="linux"
+    info_msg "installing base system ..."
     pacstrap -K /mnt \
         base base-devel \
-        ${MICROCODE} \
-        btrfs-progs \
-        linux linux-firmware \
-        grub efibootmgr \
-        cryptsetup \
-        man-db neovim \
-        networkmanager openssh \
-        pacman-contrib pkgfile reflector \
-        sudo tmux
+        "$MICROCODE" \
+        "$MAIN_KERNEL" "$MAIN_KERNEL"-headers linux-firmware \
+        btrfs-progs grub grub-btrfs snapper efibootmgr \
+        pacman-contrib reflector \
+        networkmanager iwd \
+        sudo
 
     genfstab -U -p /mnt >> /mnt/etc/fstab
     success_msg "done installing base system"
@@ -280,7 +285,7 @@ configure_system() {
     arch-chroot /mnt hwclock --systohc
 
     # set hostname
-    info_msg "input hostname:" "input"
+    info_msg "input hostname: " "input"
     read -r HOSTNAME
     echo "$HOSTNAME" > /mnt/etc/hostname
 
@@ -289,16 +294,21 @@ configure_system() {
     echo "::1 $HOSTNAME" > /mnt/etc/hosts
 
     # set locale
+    info_msg "configuring locale"
     LOCALE="en_US.UTF-8"
     sed -i "s/^#\(${LOCALE}\)/\1/" /mnt/etc/locale.gen
     echo "LANG=${LOCALE}" > /mnt/etc/locale.conf
-    arch-chroot /mnt locale-gen
+    arch-chroot /mnt locale-gen > /dev/null
     
     # set system-wide environment variables
     # echo "KEY=val" > /etc/environment
 
     # setup network
-    # TODO
+    info_msg "configuring network"
+    pacstrap /mnt networkmanager iwd > /dev/null
+    echo "[device]" > /mnt/etc/NetworkManager/conf.d/wifi_backend.conf
+    echo "wifi.backend=iwd" >> /mnt/etc/NetworkManager/conf.d/wifi_backend.conf
+    en_service "NetworkManager"
 
     # configure locale and console keymap
     KEYMAP="us"
@@ -307,7 +317,8 @@ configure_system() {
     echo "KEYMAP=$KEYMAP" > /mnt/etc/vconsole.conf
 
     # setup users
-    until pw_prompt "enter root password:"; do : ; done
+    info_msg "setup users"
+    until pw_prompt "enter root password: "; do : ; done
     echo "root:$PASSWORD" | arch-chroot /mnt chpasswd
 
     echo "%wheel ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/wheel
@@ -315,16 +326,16 @@ configure_system() {
     read -r USER_NAME
     arch-chroot /mnt useradd -m -G wheel -s /bin/bash "$USER_NAME"
 
-    until pw_prompt "enter user password:"; do : ; done
-    echo "$USER_NAME:$PASSWORD" | arch-chroot chpasswd
-    success_msg "created $USER_NAME with root privileges"
+    until pw_prompt "enter user password: "; do : ; done
+    echo "$USER_NAME:$PASSWORD" | arch-chroot /mnt chpasswd
+    success_msg "set root password and created $USER_NAME with root privileges"
 
-    # setup keyfile
-    info_msg "generating keyfile"
+    # luks setup keyfile
+    info_msg "generating keyfile for LUKS"
     KEYFILE="/luks_keyfile.bin"
     dd bs=512 count=4 iflag=fullblock if=/dev/random of=/mnt/$KEYFILE
     chmod 600 /mnt/$KEYFILE
-    info_msg "please input password of your LUKS container:" "input"
+    info_msg "input password of your LUKS container:"
     cryptsetup luksAddKey $CRYPTROOT /mnt/$KEYFILE
 
     # setup mkinitcpio
@@ -348,6 +359,17 @@ configure_system() {
     sed -i "s/^#Color/Color\nILoveCandy/" /mnt/etc/pacman.conf
 
     # enabling services
+    en_service reflector.timer # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
+    en_service btrfs-scrub@-.timer         # btrfs scrub runs by default
+    en_service btrfs-scrub@home.timer      # once every month and identifies and 
+    en_service btrfs-scrub@var-log.timer   # repairs corrupt data
+    en_service btrfs-scrub@snapshots.timer # escape paths with `systemd-escape -p /path/to/mountpoint`
+
+    # install yay
+    info_msg "installing yay"
+    arch-chroot /mnt pacman -S --needed git base-devel
+    arch-chroot /mnt git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+    arch-chroot /mnt/tmp/yay-bin makepkg-si
 }
 
 welcome_msg;
