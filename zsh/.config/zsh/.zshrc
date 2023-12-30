@@ -17,15 +17,11 @@ setopt share_history           # share history between all sessions
 unsetopt inc_append_history      # write to the history file immediately, not when the shell exits
 unsetopt inc_append_history_time # store execution time of command as well
 
-setopt zle
-setopt single_line_zle
+setopt zle # turn on line editing
 
 # Custom keybinds
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
-
-# Set your language environment
-export LANG=en_US.UTF-8
 
 # Start in a default tmux session (see https://unix.stackexchange.com/a/113768)
 #if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
