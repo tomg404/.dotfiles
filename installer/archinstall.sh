@@ -268,6 +268,12 @@ install_base_system() {
 
     MAIN_KERNEL="linux"
     info_msg "installing base system ..."
+    
+    # todo : test
+    pacman-keys --init
+    pacman -Sy
+    pacman -S archlinux-keyring
+    
     pacstrap -K /mnt \
         base base-devel \
         "$MICROCODE" \
@@ -387,7 +393,7 @@ configure_system_more() {
             tlp tlp-rdw tmux ttf-firacode-nerd ueberzug xclip xdg-user-dirs xdg-utils \
             xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
         success_msg "done installing!"
-
+        
         en_service "ly"
 
         # todo : systemctl --user enable ssh-agent
