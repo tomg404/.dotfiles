@@ -121,22 +121,24 @@ check_uefi() {
     fi
 }
 
+# this functions checks if internet is connected. if not it starts iwctl.
+# after exiting iwctl connection will be checked again.
 internet_connection() {
-    info_msg "please connect to wifi or exit if already connected"
-    iwctl
-
     info_msg "checking connection..."
     ping -c 1 www.google.com > /dev/null 2>&1
 
     if [[ $? -eq 0 ]]; then
-        success_msg "internet connection is available."
+        success_msg "connection established"
     else
-        error_msg "internet connection is not available."
+        error_msg "internet connection is ${BOLD}${RED}NOT${RESET} available."
+        info_msg "please connect to wifi or exit if already connected"
+        iwctl
+        return 1
     fi
 }
 
 update_system_clock() {
-    info_msg 'setup system clock'
+    info_msg 'setup system clock...'
     timedatectl set-ntp true
     timedatectl status > /dev/null
     success_msg 'done'
@@ -178,7 +180,7 @@ setup_filesystem() {
     partprobe $DISK
 
     # create partitions
-    info_msg "creating partitions"
+    info_msg "creating partitions..."
     sgdisk --new=0:0:+512MiB --typecode=0:ef00 --change-name=0:ESP $DISK # ef00 = EFI system partition
     sgdisk --new=0:0:0 --typecode=0:8309 --change-name=0:CRYPTROOT $DISK # 8309 = LUKS
     partprobe $DISK
@@ -196,13 +198,13 @@ setup_filesystem() {
 
     # formatting partitions
     BTRFS="/dev/mapper/cryptroot"
-    info_msg "formatting efi partition"
+    info_msg "formatting efi partition..."
     mkfs.vfat -F 32 "$ESP"
-    info_msg "formatting btrfs partition"
+    info_msg "formatting btrfs partition..."
     mkfs.btrfs "$BTRFS"
 
     # create btrfs volumes
-    info_msg "creating btrfs subvolumes"
+    info_msg "creating btrfs subvolumes..."
     mount "$BTRFS" /mnt
     btrfs subvolume create /mnt/@home #&>/dev/null
     btrfs subvolume create /mnt/@root #&>/dev/null
@@ -219,7 +221,7 @@ setup_filesystem() {
     # filesystem-specific mount options (man 5 btrfs)
     # * compress-force=zstd:XX (1-15) higher=more compression/lower speeds
     # * discard=async does the same as weekly fstrim
-    info_msg "mount btrfs volumes"
+    info_msg "mount btrfs volumes..."
     MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
     mount -o "$MOUNT_OPTIONS",subvolid=5 "$BTRFS" /mnt # subvolid=5 == subvol=@
     
@@ -242,7 +244,7 @@ setup_filesystem() {
 }
 
 select_package_mirrors() {
-    info_msg "selecting package mirrors"
+    info_msg "selecting package mirrors..."
     pacman -Syy # sync package database
     reflector --verbose \
         --protocol https \
@@ -272,7 +274,6 @@ install_base_system() {
         "$MAIN_KERNEL" "$MAIN_KERNEL"-headers linux-firmware \
         btrfs-progs grub grub-btrfs snapper efibootmgr \
         pacman-contrib reflector \
-        networkmanager iwd \
         sudo
 
     genfstab -U -p /mnt >> /mnt/etc/fstab
@@ -280,11 +281,11 @@ install_base_system() {
 }
 
 configure_system() {
-    # set timezone and update systemclock
+    # === set timezone and update systemclock
     arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
     arch-chroot /mnt hwclock --systohc
 
-    # set hostname
+    # === set hostname
     info_msg "input hostname: " "input"
     read -r HOSTNAME
     echo "$HOSTNAME" > /mnt/etc/hostname
@@ -293,30 +294,26 @@ configure_system() {
     echo "127.0.0.1 $HOSTNAME" > /mnt/etc/hosts
     echo "::1 $HOSTNAME" > /mnt/etc/hosts
 
-    # set locale
+    # === set locale
     info_msg "configuring locale"
     LOCALE="en_US.UTF-8"
-    sed -i "s/^#\(${LOCALE}\)/\1/" /mnt/etc/locale.gen
-    echo "LANG=${LOCALE}" > /mnt/etc/locale.conf
+    KEYMAP="us"
+    sed -i "/^#$LOCALE/s/^#//" /mnt/etc/locale.gen
+    echo "LANG=$LOCALE" > /mnt/etc/locale.conf
+    echo "KEYMAP=$KEYMAP" > /mnt/etc/vconsole.conf
     arch-chroot /mnt locale-gen > /dev/null
     
-    # set system-wide environment variables
+    # === setup system-wide environment variables
     # echo "KEY=val" > /etc/environment
 
-    # setup network
+    # === setup network
     info_msg "configuring network"
     pacstrap /mnt networkmanager iwd > /dev/null
     echo "[device]" > /mnt/etc/NetworkManager/conf.d/wifi_backend.conf
     echo "wifi.backend=iwd" >> /mnt/etc/NetworkManager/conf.d/wifi_backend.conf
     en_service "NetworkManager"
 
-    # configure locale and console keymap
-    KEYMAP="us"
-    sed -i "/^#$LOCALE/s/^#//" /mnt/etc/locale.gen
-    echo "LANG=$LOCALE" > /mnt/etc/locale.conf
-    echo "KEYMAP=$KEYMAP" > /mnt/etc/vconsole.conf
-
-    # setup users
+    # === setup users
     info_msg "setup users"
     until pw_prompt "enter root password: "; do : ; done
     echo "root:$PASSWORD" | arch-chroot /mnt chpasswd
@@ -330,7 +327,7 @@ configure_system() {
     echo "$USER_NAME:$PASSWORD" | arch-chroot /mnt chpasswd
     success_msg "set root password and created $USER_NAME with root privileges"
 
-    # luks setup keyfile
+    # === luks setup keyfile (password needed only once)
     info_msg "generating keyfile for LUKS"
     KEYFILE="/luks_keyfile.bin"
     dd bs=512 count=4 iflag=fullblock if=/dev/random of=/mnt/$KEYFILE
@@ -338,14 +335,14 @@ configure_system() {
     info_msg "input password of your LUKS container:"
     cryptsetup luksAddKey $CRYPTROOT /mnt/$KEYFILE
 
-    # setup mkinitcpio
+    # === mkinitcpio
     info_msg "generating initramfs"
     echo "FILES=($KEYFILE)" > /mnt/etc/mkinitcpio.conf
     echo "MODULES=(btrfs)" >> /mnt/etc/mkinitcpio.conf 
     echo "HOOKS=(systemd keyboard autodetect modconf block sd-vconsole sd-encrypt filesystems fsck)" >> /mnt/etc/mkinitcpio.conf
     arch-chroot /mnt mkinitcpio -P # recreate initramfs
 
-    # configure grub
+    # === configure grub
     info_msg "configuring grub"
     UUID=$(blkid -s UUID -o value $CRYPTROOT)
     sed -i "\,^GRUB_CMDLINE_LINUX=\"\",s,\",&rd.luks.name=$UUID=cryptroot root=$BTRFS," /mnt/etc/default/grub # `\,` at the start changes the default sed delimiter (`/`) to `,`
@@ -353,23 +350,51 @@ configure_system() {
     arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB
     arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
-    # configure pacman
+    # === configure pacman
     info_msg "configuring pacman"
     sed -i "s/^#ParallelDownloads.*/ParallelDownloads = 10/" /mnt/etc/pacman.conf
     sed -i "s/^#Color/Color\nILoveCandy/" /mnt/etc/pacman.conf
 
-    # enabling services
+    # === enabling services
     en_service reflector.timer # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
     en_service btrfs-scrub@-.timer         # btrfs scrub runs by default
     en_service btrfs-scrub@home.timer      # once every month and identifies and 
     en_service btrfs-scrub@var-log.timer   # repairs corrupt data
     en_service btrfs-scrub@snapshots.timer # escape paths with `systemd-escape -p /path/to/mountpoint`
 
-    # install yay
+    # === install yay
     info_msg "installing yay"
-    arch-chroot /mnt pacman -S --needed git base-devel
     arch-chroot /mnt git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-    arch-chroot /mnt/tmp/yay-bin makepkg-si
+    arch-chroot /mnt/tmp/yay-bin makepkg -si
+}
+
+configure_system_more() {
+    yn_prompt "now you have a working and fully encrypted arch system. install and configure more programs?"
+    if [[ $? -eq 1 ]]; then
+        success_msg "have fun :)"
+        exit 0
+    fi
+
+    # === install desktop environment
+    yn_prompt "install usable i3 desktop environment (with often used programs)?"
+    if [[ $? -eq 0 ]]; then
+        info-msg "installing i3 de..."
+        pacstrap /mnt \
+            acpilight alsa-firmware arandr bat blueberry bluez bluez-utils dmenu dunst \
+            eza feh firefox flameshot fprintd git i3-wm keepassxc kitty ly neovim \
+            networkmanager-openvpn networkmanager-vpnc obsidian okular papirus-icon-theme \
+            pavucontrol picom polybar pulseaudio rofi sof-firmware stow thunar thunar-volman \
+            tlp tlp-rdw tmux ttf-firacode-nerd ueberzug xclip xdg-user-dirs xdg-utils \
+            xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
+        success_msg "done installing!"
+
+        en_service "ly"
+
+        # todo : systemctl --user enable ssh-agent
+    fi
+    
+    # === clone dotfiles
+
 }
 
 welcome_msg;
@@ -380,3 +405,4 @@ until setup_filesystem; do : ; done
 select_package_mirrors;
 install_base_system;
 configure_system;
+configure_system_more;
