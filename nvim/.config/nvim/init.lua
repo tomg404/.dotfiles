@@ -17,6 +17,7 @@ require('lazy').setup({
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "lambdalisue/suda.vim" },
   { "echasnovski/mini.starter", version = "*" },
+  { "numToStr/Comment.nvim" },
   { 
     "nvim-telescope/telescope.nvim", tag = "0.1.5", 
     dependencies = { 'nvim-lua/plenary.nvim' } 
@@ -31,4 +32,5 @@ require('user.commands')
 -- source plugin configs
 require('plugins/mini-starter')
 require('plugins/catppuccin')
+require('plugins/comment')
 
