@@ -20,6 +20,7 @@ alias gfc="git commit -a -m \"fast commit\" && git push"
 alias t="tmux new-session -A -s default"
 alias tma="tmux attach -t"
 alias tmd="tmux detach"
+alias tmk="tmux kill-session -t"
 alias tml="tmux list-sessions"
 alias tmn="tmux new-session -s"
 
