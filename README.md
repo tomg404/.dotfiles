@@ -23,8 +23,8 @@
 
 ## TODOs
 ### Fix first
-* renew nvim config
-* ~~~dunst config~~~
+* ~~renew nvim config~~
+* ~~dunst config~~
 
 ### Fix some time
 * secrets management
