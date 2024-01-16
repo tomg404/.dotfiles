@@ -299,7 +299,7 @@ install_base_system() {
         "$MAIN_KERNEL" "$MAIN_KERNEL"-headers linux-firmware \
         btrfs-progs grub grub-btrfs snapper efibootmgr \
         pacman-contrib reflector \
-        sudo git
+        sudo git man-db
 
     genfstab -U -p /mnt >> /mnt/etc/fstab
     success_msg "done installing base system"
@@ -387,14 +387,14 @@ configure_system() {
     en_service "btrfs-scrub@var-log.timer"   # repairs corrupt data
     en_service "btrfs-scrub@snapshots.timer" # escape paths with `systemd-escape -p /path/to/mountpoint`
 
-    # === install yay
-    info_msg "installing yay"
-arch-chroot /mnt /bin/bash -e <<EOF
-    su - "$USER_NAME"
-    git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-    cd /tmp/yay-bin
-    makepkg -si
-EOF
+    # === install yay (todo make work)
+#     info_msg "installing yay"
+# arch-chroot /mnt /bin/bash -e <<EOF
+#     su - "$USER_NAME"
+#     git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+#     cd /tmp/yay-bin
+#     makepkg -si
+# EOF
 
     # TODO: change shell to zsh
 }
@@ -421,6 +421,7 @@ configure_system_more() {
         success_msg "done installing!"
         
         en_service "lightdm"
+        en_service "bluetooth"
         en_service_user "ssh-agent" "$USER_NAME"
     fi
     
@@ -437,3 +438,4 @@ select_package_mirrors;
 install_base_system;
 configure_system;
 configure_system_more;
+success_msg "install script finished!!!!"
