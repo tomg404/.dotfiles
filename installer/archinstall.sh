@@ -114,9 +114,10 @@ en_service() {
 # arguments: service_to_enable, user
 en_service_user() {
     info_msg "systemctl --user enable $1"
-    arch-chroot /mnt su - "$2"
+arch-chroot /mnt /bin/bash -e <<EOF
+    su - "$2"
     systemctl --user enable "$1"
-    exit
+EOF
 }
 
 # enable service for single user
@@ -287,9 +288,10 @@ install_base_system() {
     info_msg "installing base system ..."
     
     # todo : test
+    sed -i "s/^#ParallelDownloads.*/ParallelDownloads = 10/" /etc/pacman.conf # enabling TUUUURBOOOO
     pacman-key --init
     pacman -Sy
-    pacman -S archlinux-keyring
+    pacman -S archlinux-keyring --noconfirm
     
     pacstrap -K /mnt \
         base base-devel \
@@ -387,11 +389,12 @@ configure_system() {
 
     # === install yay
     info_msg "installing yay"
-    arch-chroot /mnt su - "$USER_NAME"
+arch-chroot /mnt /bin/bash -e <<EOF
+    su - "$USER_NAME"
     git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
     cd /tmp/yay-bin
     makepkg -si
-    exit
+EOF
 
     # TODO: change shell to zsh
 }
