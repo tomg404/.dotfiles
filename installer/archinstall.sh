@@ -38,30 +38,34 @@ BG_WHITE='\033[47m'
 #############################
 
 # this function handles printing script status.
-# arguments: color message_text is_input
+# arguments: color, message_text, is_input
 status_msg() {
     STATUS_COLOR="$1"
     MESSAGE="${WHITE}${BOLD}$2${RESET}"
     PREFIX="${WHITE}${BOLD}[${STATUS_COLOR}install script${WHITE}]${RESET}"
     if [[ "$3" == "input" ]]; then
-        echo -ne "$PREFIX $MESSAGE"
+        echo -ne "$PREFIX $MESSAGE" # without newline at the end
     else
-        echo -e "$PREFIX $MESSAGE"
+        echo -e "$PREFIX $MESSAGE" # with newline
     fi
 }
 
+# arguments: message_text, is_input
 info_msg() {
     status_msg "$CYAN" "$1" "$2"
 }
 
+# arguments: message_text, is_input
 success_msg() {
     status_msg "$GREEN" "$1" "$2"
 }
 
+# arguments: message_text, is_input
 error_msg() {
     status_msg "$RED" "$1" "$2"
 }
 
+# arguments: TODO
 yn_prompt() {
     while true; do
         info_msg "$1 ${RESET}([${BOLD}${YELLOW}y${RESET}]es/[${BOLD}${YELLOW}n${RESET}]o):" "input"
@@ -99,10 +103,23 @@ welcome_msg() {
     fi
 }
 
+# enable service for all users
+# arguments: service_to_enable
 en_service() {
     info_msg "systemctl enable $1"
-    arch-chroot /mnt systemctl enable "$1" --root /mnt > /dev/null
+    systemctl enable "$1" --root /mnt > /dev/null
 }
+
+# enable service for a single user\
+# arguments: service_to_enable, user
+en_service_user() {
+    info_msg "systemctl --user enable $1"
+    arch-chroot /mnt su - "$2"
+    systemctl --user enable "$1"
+    exit
+}
+
+# enable service for single user
 
 ##########################
 # INSTALLATION FUNCTIONS #
@@ -270,7 +287,7 @@ install_base_system() {
     info_msg "installing base system ..."
     
     # todo : test
-    pacman-keys --init
+    pacman-key --init
     pacman -Sy
     pacman -S archlinux-keyring
     
@@ -280,7 +297,7 @@ install_base_system() {
         "$MAIN_KERNEL" "$MAIN_KERNEL"-headers linux-firmware \
         btrfs-progs grub grub-btrfs snapper efibootmgr \
         pacman-contrib reflector \
-        sudo
+        sudo git
 
     genfstab -U -p /mnt >> /mnt/etc/fstab
     success_msg "done installing base system"
@@ -362,16 +379,21 @@ configure_system() {
     sed -i "s/^#Color/Color\nILoveCandy/" /mnt/etc/pacman.conf
 
     # === enabling services
-    en_service reflector.timer # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
-    en_service btrfs-scrub@-.timer         # btrfs scrub runs by default
-    en_service btrfs-scrub@home.timer      # once every month and identifies and 
-    en_service btrfs-scrub@var-log.timer   # repairs corrupt data
-    en_service btrfs-scrub@snapshots.timer # escape paths with `systemd-escape -p /path/to/mountpoint`
+    en_service "reflector.timer"              # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
+    en_service "btrfs-scrub@-.timer"         # btrfs scrub runs by default
+    en_service "btrfs-scrub@home.timer"      # once every month and identifies and 
+    en_service "btrfs-scrub@var-log.timer"   # repairs corrupt data
+    en_service "btrfs-scrub@snapshots.timer" # escape paths with `systemd-escape -p /path/to/mountpoint`
 
     # === install yay
     info_msg "installing yay"
-    arch-chroot /mnt git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-    arch-chroot /mnt/tmp/yay-bin makepkg -si
+    arch-chroot /mnt su - "$USER_NAME"
+    git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+    cd /tmp/yay-bin
+    makepkg -si
+    exit
+
+    # TODO: change shell to zsh
 }
 
 configure_system_more() {
@@ -387,16 +409,16 @@ configure_system_more() {
         info-msg "installing i3 de..."
         pacstrap /mnt \
             acpilight alsa-firmware arandr bat blueberry bluez bluez-utils dmenu dunst \
-            eza feh firefox flameshot fprintd git i3-wm keepassxc kitty ly neovim \
-            networkmanager-openvpn networkmanager-vpnc obsidian okular papirus-icon-theme \
+            eza feh firefox flameshot fprintd git i3-wm keepassxc kitty lightdm lightdm-gtk-greeter neovim \
+            networkmanager-openvpn networkmanager-vpnc obsidian okular openssh papirus-icon-theme \
             pavucontrol picom polybar pulseaudio rofi sof-firmware stow thunar thunar-volman \
             tlp tlp-rdw tmux ttf-firacode-nerd ueberzug xclip xdg-user-dirs xdg-utils \
             xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
+            # TODO: add packages missing when starting i3
         success_msg "done installing!"
         
-        en_service "ly"
-
-        # todo : systemctl --user enable ssh-agent
+        en_service "lightdm"
+        en_service_user "ssh-agent" "$USER_NAME"
     fi
     
     # === clone dotfiles
