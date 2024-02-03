@@ -1,0 +1,30 @@
+# /home/tom/.config/tmuxinator/main.yml
+
+name: hm
+root: ~/
+
+windows:
+  - home:
+      layout: main-vertical
+      panes:
+        - p1:
+        - p2:
+        - p3:
+  - downloads:
+      root: ~/Downloads
+      layout: main-vertical
+      panes:
+        - p1:
+          - ls -al
+        - p2:
+          - clear; echo "$(ls -al ~/Downloads | wc -l) files in ~/Downloads"
+  - ncspot:
+      layout: main-vertical
+      panes:
+        - p1:
+          - ncspot
+  - timer:
+      layout: main-vertical
+      panes:
+        - p1:
+          - termdown '5s'
