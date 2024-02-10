@@ -4,4 +4,5 @@ __pypackages__/
 
 ### ZSH ###
 .zcompdump*
-zsh/.config/zsh/.zhistory
+.zhistory
+.zdirs
