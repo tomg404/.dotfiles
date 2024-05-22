@@ -7,7 +7,15 @@ polybar-msg cmd quit
 # killall -q polybar
 
 # Launch bar1 and bar2
-echo "---" | tee -a /tmp/polybar.log
-polybar main 2>&1 | tee -a /tmp/polybar.log & disown
+# echo "---" | tee -a /tmp/polybar.log
+# polybar main 2>&1 | tee -a /tmp/polybar.log & disown
 
-echo "Bars launched..."
+# Launch main bar on all monitors
+if type "xrandr"; then
+  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+    MONITOR=$m polybar --reload main &
+  done
+else
+  polybar --reload main &
+fi
+
