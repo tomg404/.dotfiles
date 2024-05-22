@@ -20,3 +20,5 @@ vim.opt.splitbelow = true -- Split below when horizontal
 vim.opt.swapfile = false -- Don't use swap files (I use auto-save.nvim instead)
 vim.opt.formatoptions:append('cro') -- continue comments when going down a line, hit C-u to remove the added comment prefix
 
+-- always copy to global clipboard
+vim.api.nvim_set_option("clipboard", "unnamedplus")
