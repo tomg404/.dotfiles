@@ -1,5 +1,6 @@
-source /home/tom/.gef.py
-source $XDG_CONFIG_DIR/gdb/custom_commands.py
+source ~/.config/gdb/custom_commands.py
+source ~/.config/gdb/ptrfind.py
+source /usr/share/gef/gef.py
 
 set auto-load safe-path /
 set debuginfod enabled on

@@ -2,6 +2,9 @@
 __pycache__/
 __pypackages__/
 
+### GDB ###
+.gdb_history
+
 ### ZSH ###
 .zcompdump*
 .zhistory
