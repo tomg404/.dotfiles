@@ -1,8 +1,15 @@
 source "$ZDOTDIR/.zshenv" # always source environment variables first
 source "$ZDOTDIR/.zshaliases"
 
-# customize prompt
-zstyle ':prompt:grml:left:setup' items newline user at host rc change-root path vcs newline percent
+# Add virtual environment text
+# (https://www.pedaldrivenprogramming.com/2018/09/customize-grml-zsh-config)
+function virtual_env_prompt () {
+    REPLY=${VIRTUAL_ENV+(${VIRTUAL_ENV:t}) }
+}
+grml_theme_add_token virtual-env -f virtual_env_prompt '%F{magenta}' '%f'
+
+# Customize prompt
+zstyle ':prompt:grml:left:setup' items newline user at host rc change-root path virtual-env vcs newline percent
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]] ; then
@@ -11,13 +18,13 @@ else
   export EDITOR='nvim'
 fi
 
-# add ~/.local/bin to path
+# Add ~/.local/bin to path
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# set keyboard repeat rate
-# default values are: auto repeat delay: 660, repeat rate: 25
+# Set keyboard repeat rate
+# Default values are: auto repeat delay: 660, repeat rate: 25
 if [[ -n "$DISPLAY" ]] ; then
   xset r rate 300 100
 fi
