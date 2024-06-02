@@ -20,9 +20,9 @@ fi
 battery=$(cat /sys/class/power_supply/BAT0/capacity)
 state=$(cat /sys/class/power_supply/BAT0/status)
 notified=$(cat "$tmp_file_path")
-echo "Battery percentage: $battery%"
-echo "Battery state: $state"
-echo "Already notified: $notified"
+# echo "Battery percentage: $battery%" # comment out to not spam journalctl
+# echo "Battery state: $state"         #
+# echo "Already notified: $notified"   #
 
 # notification logic
 if [ "$state" = "Discharging" ] ; then
