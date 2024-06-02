@@ -6,7 +6,7 @@ __pypackages__/
 .gdb_history
 
 ### ZSH ###
-.zcompdump*
-.zcompcache
-.zhistory
-.zdirs
+zsh/.config/zsh/.zcompdump
+zsh/.config/zsh/.zcompcache
+zsh/.config/zsh/.zdirs
+zsh/.config/zsh/.cache
