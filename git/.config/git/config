@@ -1,0 +1,12 @@
+[user]
+#	email = 
+#	name = 
+
+[alias]
+  d = diff
+  s = status
+  a = add
+  c = commit -v
+  p = push
+  l = pull
+
