@@ -7,15 +7,22 @@ alias edit_zshconfig="$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc.local"
 alias edit_zshaliases="$EDITOR $XDG_CONFIG_HOME/zsh/.zshaliases"
 alias edit_zshenv="$EDITOR $XDG_CONFIG_HOME/zsh/.zshenv"
 
-# rebinds
+## rebinds
+# neovim
 alias nv="nvim"
-alias ls="eza --icons=always --color=always"
+
+# ls
+alias eza="eza --icons=always --color=always"
+alias ls="eza --group-directories-first"
+alias la="eza -lago --total-size --group-directories-first"
+alias laa="eza -laghiuUo --changed --total-size --group-directories-first"
 alias lss="/usr/bin/ls"
+
+# grep
 alias grep="grep --color=always"
 
-# git
-alias gfc="git commit -a -m \"fast commit\" && git push"
-alias gst="git status"
+# bat
+alias bat="bat --theme=\"1337\" --style=\"header-filename,header-filesize,rule\""
 
 # tmux
 alias t="tmux new-session -A -s default"
@@ -29,18 +36,21 @@ alias tmn="tmux new-session -s"
 alias clipboard="xclip -selection clipboard" # copy terminal stuff with 'cat file | clipboard'
 alias clip="clipboard"
 alias pastebin="curl -F 'file=@-' 0x0.st"
+alias paste="pastebin"
 
 # keep $HOME clean rebinds (xdg-ninja)
 alias nvidia-settings="nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings"
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
-# temporary
+# 'temporary' (lol!)
 alias python='python3'
 
 # kitty specific aliases
 if [[ -n "$KITTY_INSTALLATION_DIR" ]] ; then
     alias kssh="kitten ssh"
     alias icat="kitten icat"
+    alias kdiff="kitten diff"
 fi
 
 
