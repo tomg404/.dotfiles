@@ -19,7 +19,7 @@ export HISTSIZE=10000 # Maximum lines in internal history
 export SAVEHIST=10000 # Maximum lines of saved history file
 
 # recommended by xdg-ninja
-export ANDROID_HOME="$XDG_DATA_HOME"/android
+export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
@@ -30,3 +30,10 @@ export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
+export CALCHISTFILE="$XDG_CACHE_HOME"/calc_history
+export ELECTRUMDIR="$XDG_DATA_HOME"/electrum
+export GOPATH="$XDG_DATA_HOME"/go
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle # ruby bundler
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle   # ruby bundler
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle   # ruby bundler
