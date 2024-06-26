@@ -42,3 +42,5 @@ if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ;
 else 
   echo "zsh-autosuggestions not sourced"
 fi
+
+motd-interactive-shell
