@@ -84,3 +84,12 @@ motd-interactive-shell () {
     cat /etc/motd
   fi
 }
+
+# Generate random pin
+gen-pin () {
+  length=$1
+  if [[ "$length" == "" ]] ; then
+    length=4
+  fi
+  echo $(tr -dc '0-9' < /dev/urandom | fold -w"$length" | head -10)
+}
