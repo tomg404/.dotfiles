@@ -36,7 +36,7 @@ include catppucchin-macchiato
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex --autostart --environment i3
+#exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -44,27 +44,27 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- "$XDG_CONFIG_HOME/i3/i3lo
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+#exec --no-startup-id nm-applet
 
 # start dunst notification daemon
 exec --no-startup-id dunst
 
-# start thunar (automounting)
-exec --no-startup-id thunar --daemon
+# start udiskie (automounting)
+exec --no-startup-id udiskie
 
 # start picom compositor
 exec_always --no-startup-id picom
 
 # start polybar via the startup script
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id "$XDG_CONFIG_HOME/polybar/launch.sh"
 
 # set the wallpaper
 exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png
 
 # startup applications in certain workspaces
-exec --no-startup-id i3-msg 'workspace number 1; exec /usr/bin/firefox'
+exec --no-startup-id i3-msg 'workspace number 1; exec --no-startup-id /usr/bin/firefox'
 exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/synology-drive'
-exec --no-startup-id i3-msg 'exec /usr/bin/keepassxc'
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/keepassxc'
 
 
 #  _   __          ______ _           _ _                 
