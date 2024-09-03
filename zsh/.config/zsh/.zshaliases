@@ -3,9 +3,14 @@
 ###################################################
 
 # instant edit configs
-alias edit_zshconfig="$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc.local"
-alias edit_zshaliases="$EDITOR $XDG_CONFIG_HOME/zsh/.zshaliases"
-alias edit_zshenv="$EDITOR $XDG_CONFIG_HOME/zsh/.zshenv"
+alias edit_zshconfig='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshrc.local'
+alias edit_zshaliases='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshaliases'
+alias edit_zshenv='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshenv'
+
+# networking
+alias wifi-rescan="nmcli device wifi rescan"
+alias wifi-list="nmcli device wifi list"
+alias wifi-connect="nmcli device wifi connect"
 
 ## rebinds
 # neovim
@@ -39,8 +44,8 @@ alias pastebin="curl -F 'file=@-' 0x0.st"
 alias paste="pastebin"
 
 # keep $HOME clean rebinds (xdg-ninja)
-alias nvidia-settings="nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings"
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings'
+alias wget='wget --hsts-file="$XDG_DATA_HOME"/wget-hsts'
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 # 'temporary' (lol!)
@@ -91,5 +96,52 @@ gen-pin () {
   if [[ "$length" == "" ]] ; then
     length=4
   fi
-  echo $(tr -dc '0-9' < /dev/urandom | fold -w"$length" | head -10)
+  tr -dc '0-9' < /dev/urandom | fold -w"$length" | head -10
 }
+
+# Checks if all environment variables exist, if not warn and return 1
+check-env-vars () {
+  error=0
+  for arg in "$@"; do
+    if ! declare -p "$arg" >/dev/null 2>&1 ; then
+        echo -e "\e[33m[Warning]\e[0m The environment variable '$arg' doesn't exists."
+        error=1
+    fi
+  done
+  return $error
+}
+
+# Manage e-mail aliases on migadu
+email-alias () {
+  if ! check-env-vars MIGADU_USER MIGADU_TOKEN ALIAS_DOMAIN ALIAS_DESTINATION ; then
+    return
+  fi
+
+  case "$1" in
+    create|c)
+      if [[ "$2" == "" ]] ; then
+        echo "please provide an alias"
+        return
+      fi
+
+      RANDOM_NUMBER=$(tr -dc '0-9' < /dev/urandom | fold -w4 | head -1)
+      ALIAS_NAME="${2}-${RANDOM_NUMBER}"
+      echo "$ALIAS_NAME@$ALIAS_DOMAIN -> $ALIAS_DESTINATION@$ALIAS_DOMAIN"
+
+      OUTPUT=$(curl -s -u "$MIGADU_USER:$MIGADU_TOKEN" \
+        -d "{\"local_part\":\"$ALIAS_NAME\", \"destinations\": \"$ALIAS_DESTINATION@$ALIAS_DOMAIN\"}" \
+        -X POST "https://api.migadu.com/v1/domains/$ALIAS_DOMAIN/aliases" \
+        -H "Content-Type:application/json")
+      echo "$OUTPUT" | jq
+      ;;
+    list|l)
+      OUTPUT=$(curl -s -u "$MIGADU_USER:$MIGADU_TOKEN" \
+        "https://api.migadu.com/v1/domains/$ALIAS_DOMAIN/aliases")
+      echo "$OUTPUT" | jq -r '.address_aliases[] | "\(.address) -> \(.destinations | join(", "))"'
+      ;;
+    *)
+      echo "usage: $0 [create|list] [opt]"
+      ;;
+  esac
+}
+
