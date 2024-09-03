@@ -1,5 +1,6 @@
 source "$ZDOTDIR/.zshenv" # always source environment variables first
 source "$ZDOTDIR/.zshaliases"
+source "$ZDOTDIR/.secrets"
 
 # Add virtual environment text
 # (https://www.pedaldrivenprogramming.com/2018/09/customize-grml-zsh-config)
