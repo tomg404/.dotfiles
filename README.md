@@ -16,8 +16,9 @@
 ## Theme
 * [Catppucchin Macchiato](https://github.com/catppuccin/catppuccin)
 
-## Sync & Backup
-* Synology Drive Client (AUR)
+## Scripts
+* use `shellcheck`
+* use `shfmt`
 
 ---
 
