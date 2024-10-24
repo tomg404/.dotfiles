@@ -2,6 +2,9 @@
 ###                A L I A S E S                ###
 ###################################################
 
+# update mirrors
+alias update-mirrors="reflector --country germany --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
+
 # instant edit configs
 alias edit_zshconfig='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshrc.local'
 alias edit_zshaliases='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshaliases'
