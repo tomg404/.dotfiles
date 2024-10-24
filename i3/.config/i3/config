@@ -59,12 +59,13 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id "$XDG_CONFIG_HOME/polybar/launch.sh"
 
 # set the wallpaper
-exec_always --no-startup-id feh --no-fehbg --bg-scale $HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png
+exec_always --no-startup-id feh --no-fehbg --bg-scale "$HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png"
 
-# startup applications in certain workspaces
-exec --no-startup-id i3-msg 'workspace number 1; exec --no-startup-id /usr/bin/firefox'
-exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/synology-drive'
-exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/keepassxc'
+# startup applications (assigned to certain workspaces below)
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/firefox;'
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/thunderbird;'
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/synology-drive;'
+exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/keepassxc;'
 
 
 #  _   __          ______ _           _ _                 
@@ -94,6 +95,9 @@ bindsym $mod+c exec --no-startup-id networkmanager_dmenu
 # lock screen (i3lock)
 bindsym $mod+o exec --no-startup-id xtrlock
 bindsym $mod+p exec --no-startup-id loginctl lock-session
+
+# toggle screenlayout (xrandr)
+bindsym $mod+Shift+x exec --no-startup-id "$HOME/.dotfiles/random-scripts/toggle-xrandr.sh"
 
 # hibernate system
 bindsym XF86Favorites exec systemctl hibernate
@@ -277,9 +281,12 @@ for_window [class="vlc"] floating enable
 for_window [class="Thunar"] floating enable
 for_window [class="iwgtk"] floating enable
 for_window [class="gnome-calculator"] floating enable
+for_window [class="Galculator"] floating enable
 for_window [class=$synology_class] floating enable
 for_window [class=$keepass_class] floating enable
 
 assign [class=$synology_class] $ws9
 assign [class=$keepass_class] $ws9
 assign [class="discord"] $ws8
+assign [class="thunderbird"] $ws2
+assign [class="firefox"] $ws1
