@@ -241,15 +241,15 @@ setup_filesystem() {
     info_msg "mount btrfs volumes..."
     # MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
     MOUNT_OPTIONS="ssd,noatime,compress-force=zstd:3,discard=async"
-    mount -o "$MOUNT_OPTIONS",subvol=@ "$BTRFS" /mnt # subvolid=5 == subvol=@
+    mount -o "$MOUNT_OPTIONS",subvolid=5 "$BTRFS" /mnt # subvolid=5 == subvol=@
     
     # create mount points
-    mkdir -p /mnt/{home,root,snapshots,srv,var/{log,cache/pacman/pkg},boot}
+    mkdir -p /mnt/{home,root,.snapshots,srv,var/{log,cache/pacman/pkg},boot}
 
     # mount btrfs volumes in disk
     mount -o "$MOUNT_OPTIONS",subvol=@home "$BTRFS" /mnt/home
     mount -o "$MOUNT_OPTIONS",subvol=@root "$BTRFS" /mnt/root
-    mount -o "$MOUNT_OPTIONS",subvol=@snapshots "$BTRFS" /mnt/snapshots
+    mount -o "$MOUNT_OPTIONS",subvol=@snapshots "$BTRFS" /mnt/.snapshots
     mount -o "$MOUNT_OPTIONS",subvol=@var_log "$BTRFS" /mnt/var/log
     mount -o "$MOUNT_OPTIONS",subvol=@var_pkgs "$BTRFS" /mnt/var/cache/pacman/pkg
     mount -o "$MOUNT_OPTIONS",subvol=@srv "$BTRFS" /mnt/srv
