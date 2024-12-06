@@ -65,7 +65,7 @@ error_msg() {
     status_msg "$RED" "$1" "$2"
 }
 
-# arguments: TODO
+# arguments: yes_no_question
 yn_prompt() {
     while true; do
         info_msg "$1 ${RESET}([${BOLD}${YELLOW}y${RESET}]es/[${BOLD}${YELLOW}n${RESET}]o):" "input"
@@ -229,8 +229,7 @@ setup_filesystem() {
     btrfs subvolume create /mnt/@snapshots #&>/dev/null
     btrfs subvolume create /mnt/@var_log #&>/dev/null
     btrfs subvolume create /mnt/@var_pkgs #&>/dev/null
-
-    # mount created volumes
+    btrfs subvolume create /mnt/@srv #&>/dev/null
     umount /mnt
 
     # filesystem-independent mount options (man 8 mount)
@@ -240,11 +239,12 @@ setup_filesystem() {
     # * compress-force=zstd:XX (1-15) higher=more compression/lower speeds
     # * discard=async does the same as weekly fstrim
     info_msg "mount btrfs volumes..."
-    MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
-    mount -o "$MOUNT_OPTIONS",subvolid=5 "$BTRFS" /mnt # subvolid=5 == subvol=@
+    # MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
+    MOUNT_OPTIONS="ssd,noatime,compress-force=zstd:3,discard=async"
+    mount -o "$MOUNT_OPTIONS",subvol=@ "$BTRFS" /mnt # subvolid=5 == subvol=@
     
     # create mount points
-    mkdir -p /mnt/{home,root,snapshots,var/{log,cache/pacman/pkg},boot}
+    mkdir -p /mnt/{home,root,snapshots,srv,var/{log,cache/pacman/pkg},boot}
 
     # mount btrfs volumes in disk
     mount -o "$MOUNT_OPTIONS",subvol=@home "$BTRFS" /mnt/home
@@ -252,7 +252,8 @@ setup_filesystem() {
     mount -o "$MOUNT_OPTIONS",subvol=@snapshots "$BTRFS" /mnt/snapshots
     mount -o "$MOUNT_OPTIONS",subvol=@var_log "$BTRFS" /mnt/var/log
     mount -o "$MOUNT_OPTIONS",subvol=@var_pkgs "$BTRFS" /mnt/var/cache/pacman/pkg
-    
+    mount -o "$MOUNT_OPTIONS",subvol=@srv "$BTRFS" /mnt/srv
+
     chmod 750 /mnt/root # owner: rwx, group: r-x, other: ---
     chattr +C /mnt/var/log # disable copy-on-write on this folder
 
@@ -287,7 +288,7 @@ install_base_system() {
     MAIN_KERNEL="linux"
     info_msg "installing base system ..."
     
-    # todo : test
+    # TODO : test
     sed -i "s/^#ParallelDownloads.*/ParallelDownloads = 10/" /etc/pacman.conf # enabling TUUUURBOOOO
     pacman-key --init
     pacman -Sy
@@ -301,7 +302,7 @@ install_base_system() {
         pacman-contrib reflector \
         sudo git man-db
 
-    genfstab -U -p /mnt >> /mnt/etc/fstab
+    genfstab -U /mnt >> /mnt/etc/fstab
     success_msg "done installing base system"
 }
 
