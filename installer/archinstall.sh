@@ -224,6 +224,8 @@ setup_filesystem() {
     # create btrfs volumes
     info_msg "creating btrfs subvolumes..."
     mount "$BTRFS" /mnt
+
+    btrfs subvolume create /mnt/@ #&>/dev/null
     btrfs subvolume create /mnt/@home #&>/dev/null
     btrfs subvolume create /mnt/@root #&>/dev/null
     btrfs subvolume create /mnt/@snapshots #&>/dev/null
