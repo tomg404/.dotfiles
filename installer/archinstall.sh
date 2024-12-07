@@ -225,13 +225,13 @@ setup_filesystem() {
     info_msg "creating btrfs subvolumes..."
     mount "$BTRFS" /mnt
 
-    btrfs subvolume create /mnt/@ #&>/dev/null
-    btrfs subvolume create /mnt/@home #&>/dev/null
-    btrfs subvolume create /mnt/@root #&>/dev/null
-    btrfs subvolume create /mnt/@snapshots #&>/dev/null
-    btrfs subvolume create /mnt/@var_log #&>/dev/null
-    btrfs subvolume create /mnt/@var_pkgs #&>/dev/null
-    btrfs subvolume create /mnt/@srv #&>/dev/null
+    btrfs subvolume create /mnt/@           &>/dev/null
+    btrfs subvolume create /mnt/@home       &>/dev/null
+    btrfs subvolume create /mnt/@root       &>/dev/null
+    btrfs subvolume create /mnt/@snapshots  &>/dev/null
+    btrfs subvolume create /mnt/@var_log    &>/dev/null
+    btrfs subvolume create /mnt/@var_pkgs   &>/dev/null
+    btrfs subvolume create /mnt/@srv        &>/dev/null
     umount /mnt
 
     # filesystem-independent mount options (man 8 mount)
@@ -241,7 +241,6 @@ setup_filesystem() {
     # * compress-force=zstd:XX (1-15) higher=more compression/lower speeds
     # * discard=async does the same as weekly fstrim
     info_msg "mount btrfs volumes..."
-    # MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
     MOUNT_OPTIONS="ssd,noatime,compress-force=zstd:3,discard=async"
     mount -o "$MOUNT_OPTIONS",subvol=@ "$BTRFS" /mnt # subvolid=5 == subvol=@
     
@@ -390,7 +389,7 @@ configure_system() {
     en_service "btrfs-scrub@var-log.timer"   # repairs corrupt data
     en_service "btrfs-scrub@snapshots.timer" # escape paths with `systemd-escape -p /path/to/mountpoint`
 
-    # === install yay (todo make work)
+    # === install yay TODO
 #     info_msg "installing yay"
 # arch-chroot /mnt /bin/bash -e <<EOF
 #     su - "$USER_NAME"
@@ -399,7 +398,6 @@ configure_system() {
 #     makepkg -si
 # EOF
 
-    # TODO: change shell to zsh
 }
 
 configure_system_more() {
@@ -415,19 +413,26 @@ configure_system_more() {
         info-msg "installing i3 de..."
         pacstrap /mnt \
             acpilight alsa-firmware arandr bat blueberry bluez bluez-utils dmenu dunst \
-            eza feh firefox flameshot fprintd git i3-wm keepassxc kitty lightdm lightdm-gtk-greeter neovim \
-            networkmanager-openvpn networkmanager-vpnc obsidian okular openssh papirus-icon-theme \
-            pavucontrol picom polybar pulseaudio rofi sof-firmware stow thunar thunar-volman \
-            tlp tlp-rdw tmux ttf-firacode-nerd ueberzug xclip xdg-user-dirs xdg-utils \
+            eza feh firefox flameshot fprintd git i3-wm i3lock keepassxc kitty lightdm lightdm-gtk-greeter neovim \
+            networkmanager-openvpn networkmanager-vpnc noto-fonts-emoji obsidian okular openssh pacman-contrib papirus-icon-theme \
+            pavucontrol picom polybar pulseaudio pulseaudio-bluetooth rofi sof-firmware stow thunar thunar-volman \
+            tlp tlp-rdw tmux ttf-firacode-nerd udiskie ueberzug xclip xdg-user-dirs xdg-utils \
             xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
-            # TODO: add packages missing when starting i3
         success_msg "done installing!"
         
         en_service "lightdm"
         en_service "bluetooth"
         en_service_user "ssh-agent" "$USER_NAME"
     fi
+
+    # === change shell to zsh
+    echo -n "$PASSWORD" | arch-chroot -u "$USER_NAME" /mnt chsh -s $(which zsh)
     
+    # === add user to groups
+    arch-chroot -u "$USER_NAME" /mnt usermod -aG video "$USER_NAME" # change backlight without sudo
+
+    # === install yay
+
     # === clone dotfiles
 
 }
