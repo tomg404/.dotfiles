@@ -243,7 +243,7 @@ setup_filesystem() {
     info_msg "mount btrfs volumes..."
     # MOUNT_OPTIONS="rw,noatime,compress-force=zstd:3,discard=async"
     MOUNT_OPTIONS="ssd,noatime,compress-force=zstd:3,discard=async"
-    mount -o "$MOUNT_OPTIONS",subvolid=5 "$BTRFS" /mnt # subvolid=5 == subvol=@
+    mount -o "$MOUNT_OPTIONS",subvol=@ "$BTRFS" /mnt # subvolid=5 == subvol=@
     
     # create mount points
     mkdir -p /mnt/{home,root,.snapshots,srv,var/{log,cache/pacman/pkg},boot}
