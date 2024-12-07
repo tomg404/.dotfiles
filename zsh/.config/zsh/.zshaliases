@@ -3,7 +3,7 @@
 ###################################################
 
 # update mirrors
-alias update-mirrors="reflector --country germany --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
+alias update-mirrors="sudo reflector --country germany --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
 
 # instant edit configs
 alias edit_zshconfig='"$EDITOR" $XDG_CONFIG_HOME/zsh/.zshrc.local'
@@ -30,7 +30,7 @@ alias lss="/usr/bin/ls"
 alias grep="grep --color=always"
 
 # bat
-alias bat="bat --theme=\"1337\" --style=\"header-filename,header-filesize,rule\""
+alias bat="bat --theme=\"1337\" --style=\"header-filename,header-filesize,rule\" --wrap=never"
 
 # tmux
 alias t="tmux new-session -A -s default"
