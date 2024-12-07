@@ -79,6 +79,8 @@ yn_prompt() {
     done
 }
 
+# ask for password two times, repeat if passwords dont match
+# arguments: prompt_message
 pw_prompt() {
     MESSAGE="$1"
     info_msg "$MESSAGE" "input"
@@ -110,7 +112,7 @@ en_service() {
     systemctl enable "$1" --root /mnt > /dev/null
 }
 
-# enable service for a single user\
+# enable service for a single user
 # arguments: service_to_enable, user
 en_service_user() {
     info_msg "systemctl --user enable $1"
@@ -120,13 +122,11 @@ arch-chroot /mnt /bin/bash -e <<EOF
 EOF
 }
 
-# enable service for single user
-
 ##########################
 # INSTALLATION FUNCTIONS #
 ##########################
 
-# Check if system is booted in UEFI mode. If booted
+# check if system is booted in UEFI mode. If booted
 # in BIOS mode end script.
 check_uefi() {
     ls /sys/firmware/efi/efivars > /dev/null 2>&1
@@ -162,7 +162,7 @@ update_system_clock() {
     success_msg 'done'
 }
 
-# This function selects the main disk and creates
+# this function selects the main disk and creates
 # two partitions: EFI and LUKS. The LUKS partition is
 # formatted with the BTRFS filesystem and volumes are
 # created and mounted.
@@ -190,7 +190,7 @@ setup_filesystem() {
 
     # fill disk with random data
     if yn_prompt "overwrite data?" ; then
-        cryptsetup open --type plain -d /dev/urandom $DISK CRYPTROOT
+        cryptsetup open -q --type plain -d /dev/urandom $DISK CRYPTROOT
         info_msg "overwriting ..."
         dd if=/dev/zero of=/dev/mapper/CRYPTROOT bs=1M status=progress oflag=direct
         cryptsetup close CRYPTROOT
@@ -248,12 +248,12 @@ setup_filesystem() {
     mkdir -p /mnt/{home,root,.snapshots,srv,var/{log,cache/pacman/pkg},boot}
 
     # mount btrfs volumes in disk
-    mount -o "$MOUNT_OPTIONS",subvol=@home "$BTRFS" /mnt/home
-    mount -o "$MOUNT_OPTIONS",subvol=@root "$BTRFS" /mnt/root
+    mount -o "$MOUNT_OPTIONS",subvol=@home      "$BTRFS" /mnt/home
+    mount -o "$MOUNT_OPTIONS",subvol=@root      "$BTRFS" /mnt/root
     mount -o "$MOUNT_OPTIONS",subvol=@snapshots "$BTRFS" /mnt/.snapshots
-    mount -o "$MOUNT_OPTIONS",subvol=@var_log "$BTRFS" /mnt/var/log
-    mount -o "$MOUNT_OPTIONS",subvol=@var_pkgs "$BTRFS" /mnt/var/cache/pacman/pkg
-    mount -o "$MOUNT_OPTIONS",subvol=@srv "$BTRFS" /mnt/srv
+    mount -o "$MOUNT_OPTIONS",subvol=@var_log   "$BTRFS" /mnt/var/log
+    mount -o "$MOUNT_OPTIONS",subvol=@var_pkgs  "$BTRFS" /mnt/var/cache/pacman/pkg
+    mount -o "$MOUNT_OPTIONS",subvol=@srv       "$BTRFS" /mnt/srv
 
     chmod 750 /mnt/root # owner: rwx, group: r-x, other: ---
     chattr +C /mnt/var/log # disable copy-on-write on this folder
@@ -383,7 +383,7 @@ configure_system() {
     sed -i "s/^#Color/Color\nILoveCandy/" /mnt/etc/pacman.conf
 
     # === enabling services
-    en_service "reflector.timer"              # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
+    en_service "reflector.timer"             # refresh pacman mirrors in certain interval (configure in /usr/lib/systemd/system/reflector.timer)
     en_service "btrfs-scrub@-.timer"         # btrfs scrub runs by default
     en_service "btrfs-scrub@home.timer"      # once every month and identifies and 
     en_service "btrfs-scrub@var-log.timer"   # repairs corrupt data
@@ -431,9 +431,9 @@ configure_system_more() {
     # === add user to groups
     arch-chroot -u "$USER_NAME" /mnt usermod -aG video "$USER_NAME" # change backlight without sudo
 
-    # === install yay
+    # === TODO: install yay
 
-    # === clone dotfiles
+    # === TODO: clone dotfiles
 
 }
 
