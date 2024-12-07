@@ -319,7 +319,7 @@ configure_system() {
 
     # add matching entries to /etc/hosts
     echo "127.0.0.1 $HOSTNAME" > /mnt/etc/hosts
-    echo "::1 $HOSTNAME" > /mnt/etc/hosts
+    echo "::1 $HOSTNAME" >> /mnt/etc/hosts
 
     # === set locale
     info_msg "configuring locale"
