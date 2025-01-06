@@ -273,6 +273,7 @@ tiling_drag modifier titlebar
 
 set $synology_class "cloud-drive-ui"
 set $keepass_class "KeePassXC"
+set $signal_class "Signal"
 
 for_window [class="Nm-connection-editor"] floating enable
 for_window [title="Bluetooth"] floating enable
@@ -282,9 +283,11 @@ for_window [class="Thunar"] floating enable
 for_window [class="iwgtk"] floating enable
 for_window [class="gnome-calculator"] floating enable
 for_window [class="Galculator"] floating enable
+for_window [class=$signal_class] floating enable
 for_window [class=$synology_class] floating enable
 for_window [class=$keepass_class] floating enable
 
+assign [class=$signal_class] $ws9
 assign [class=$synology_class] $ws9
 assign [class=$keepass_class] $ws9
 assign [class="discord"] $ws8
