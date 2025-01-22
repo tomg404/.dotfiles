@@ -59,7 +59,8 @@ exec_always --no-startup-id picom
 exec_always --no-startup-id "$XDG_CONFIG_HOME/polybar/launch.sh"
 
 # set the wallpaper
-exec_always --no-startup-id feh --no-fehbg --bg-scale "$HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png"
+# exec_always --no-startup-id feh --no-fehbg --bg-scale "$HOME/.dotfiles/wallpapers/mandelbrot-full-lavender.png"
+exec_always --no-startup-id "$XDG_CONFIG_HOME/i3/wallpapers/set-wallpaper.sh $XDG_CONFIG_HOME/i3/wallpapers/traffic-light.jpeg.b64"
 
 # startup applications (assigned to certain workspaces below)
 exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/firefox;'
