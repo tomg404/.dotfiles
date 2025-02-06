@@ -17,7 +17,9 @@ WALLPAPER=$(mktemp)
 base64 -d "$WALLPAPER_B64" > "$WALLPAPER" 2> /dev/null
 if [ $? -ne 0 ]; then
   echo "Error: Could not decode file $1"
+  rm "$WALLPAPER"
   exit 1
 fi
 
 feh --no-fehbg --bg-scale "$WALLPAPER"
+rm "$WALLPAPER"
