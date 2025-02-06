@@ -15,6 +15,11 @@ alias wifi-rescan="nmcli device wifi rescan"
 alias wifi-list="nmcli device wifi list"
 alias wifi-connect="nmcli device wifi connect"
 
+# change keyboard layout
+alias layout-de="setxkbmap -layout de"
+alias layout-us="setxkbmap -layout us"
+alias layout-usde="setxkbmap -layout 'de(us)'"
+
 ## rebinds
 # neovim
 alias nv="nvim"
@@ -45,6 +50,9 @@ alias clipboard="xclip -selection clipboard" # copy terminal stuff with 'cat fil
 alias clip="clipboard"
 alias pastebin="curl -F 'file=@-' 0x0.st"
 alias paste="pastebin"
+
+# yt-dlp
+alias yt-dlp-mp3="yt-dlp -x --audio-format mp3 --audio-quality 320k --embed-thumbnail --convert-thumbnail jpg --add-metadata -o '%(title)s.%(ext)s' --quiet --progress"
 
 # keep $HOME clean rebinds (xdg-ninja)
 alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings'
