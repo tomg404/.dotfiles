@@ -1,0 +1,12 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = *
+
+[Action]
+Description = Stop upgrade process when battery is below a minimum threshold (default: 30%)
+When = PreTransaction
+Exec = /bin/sh -c "if [ $(cat /sys/class/power_supply/BAT0/capacity) -lt 30 ]; then /bin/false; else /bin/true; fi"
+AbortOnFail
