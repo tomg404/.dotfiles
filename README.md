@@ -7,7 +7,7 @@
 ## Installing configs
 ### Automatic (currently only installs to .config)
 ```bash
-$ ./install-configs.sh
+./install-configs.sh
 ```
 ### Manual
 The following commands have to be executed from inside the `~/.dotfiles` directory!
