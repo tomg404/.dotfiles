@@ -1,0 +1,8 @@
+## matches on usb drive insert
+# ACTION=="add", SUBSYSTEMS=="block", ENV{ID_BUS}=="usb", \
+# ENV{ID_VENDOR_ID}=="090c", ENV{ID_MODEL_ID}=="1000", \
+# RUN+="/bin/su -c 'echo testing > /home/tom/test-udev-usb'"
+
+## matches on hdmi insert
+# ACTION=="change", SUBSYSTEMS=="drm", ENV{HOTPLUG}=="1", \
+# RUN+="/home/tom/.config/random-scripts/toggle-xrandr.sh"
