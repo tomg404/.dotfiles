@@ -103,11 +103,11 @@ motd-interactive-shell () {
 
 # Generate random pin
 gen-pin () {
-  length=$1
-  if [[ "$length" == "" ]] ; then
-    length=4
-  fi
-  tr -dc '0-9' < /dev/urandom | fold -w"$length" | head -10
+  LEN=$1
+  NUM=$2
+  if [[ "$LEN" == "" ]] ; then LEN=4 fi
+  if [[ "$NUM" == "" ]] ; then NUM=10 fi
+  tr -dc '0-9' < /dev/urandom | fold -w"$LEN" | head -"$NUM"
 }
 
 # Checks if all environment variables exist, if not warn and return 1
