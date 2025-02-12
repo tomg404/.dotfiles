@@ -98,7 +98,7 @@ bindsym $mod+o exec --no-startup-id xtrlock
 bindsym $mod+p exec --no-startup-id loginctl lock-session
 
 # toggle screenlayout (xrandr)
-bindsym $mod+Shift+x exec --no-startup-id "$HOME/.dotfiles/random-scripts/toggle-xrandr.sh"
+bindsym $mod+Shift+x exec --no-startup-id "$HOME/.dotfiles/scripts/toggle-xrandr.sh"
 
 # hibernate system
 bindsym XF86Favorites exec systemctl hibernate
