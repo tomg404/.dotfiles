@@ -101,6 +101,7 @@ motd-interactive-shell () {
     # if timestamp file doesn't exist, create it
     date +%s > "$timestamp_file"
     cat /etc/motd
+    sh $HOME/.dotfiles/scripts/check-inwx.sh
   fi
 }
 
