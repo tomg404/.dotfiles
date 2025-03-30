@@ -21,6 +21,12 @@ check_command_exists () {
 check_command_exists 'curl'
 check_command_exists 'jq'
 
+# check network connection
+RET=$(curl -s -L --head 'https://www.inwx.de/de' -o /dev/null -w '%{http_code}')
+if [ $RET -ne 200 ]; then
+  echo "Could not connect to inwx.de"
+fi
+
 # create tmp file for cookie
 COOKIE_JAR=$(mktemp) 
 
