@@ -417,7 +417,7 @@ configure_system_more() {
             networkmanager-openvpn networkmanager-vpnc noto-fonts-emoji obsidian okular openssh pacman-contrib papirus-icon-theme \
             pavucontrol picom polybar pulseaudio pulseaudio-bluetooth rofi sof-firmware stow thunar thunar-volman \
             tlp tlp-rdw tmux ttf-firacode-nerd udiskie ueberzug xclip xdg-user-dirs xdg-utils \
-            xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
+            x11-ssh-askpass xss-lock xterm xtrlock zsh zsh-autosuggestions zsh-syntax-highlighting
         success_msg "done installing!"
         
         en_service "lightdm"
