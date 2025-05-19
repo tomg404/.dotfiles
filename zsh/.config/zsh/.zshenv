@@ -18,6 +18,12 @@ export HISTFILE="$XDG_STATE_HOME/zsh/history"
 export HISTSIZE=10000 # Maximum lines in internal history
 export SAVEHIST=10000 # Maximum lines of saved history file
 
+# ruby
+if command -v ruby >/dev/null 2>&1; then
+  export GEM_HOME="$HOME"/.gem
+  export PATH="$GEM_HOME/ruby/$(ruby -e 'print RbConfig::CONFIG["ruby_version"]')/bin:$PATH"
+fi
+
 # recommended by xdg-ninja
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
@@ -34,6 +40,3 @@ export CALCHISTFILE="$XDG_CACHE_HOME"/calc_history
 export ELECTRUMDIR="$XDG_DATA_HOME"/electrum
 export GOPATH="$XDG_DATA_HOME"/go
 export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle # ruby bundler
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle   # ruby bundler
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle   # ruby bundler
