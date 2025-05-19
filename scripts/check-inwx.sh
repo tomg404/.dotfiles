@@ -25,6 +25,7 @@ check_command_exists 'jq'
 RET=$(curl -s -L --head 'https://www.inwx.de/de' -o /dev/null -w '%{http_code}')
 if [ $RET -ne 200 ]; then
   echo "Could not connect to inwx.de"
+  exit 1
 fi
 
 # create tmp file for cookie
