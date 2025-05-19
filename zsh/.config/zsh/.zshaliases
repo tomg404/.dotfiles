@@ -3,7 +3,7 @@
 ###################################################
 
 # arch specific stuff
-alias update-mirrors="sudo reflector --country germany --latest 10 --sort rate --save /etc/pacman.d/mirrorlist"
+alias update-mirrors="sudo reflector --country germany --protocol https --latest 10 --sort rate --fastest 10 --save /etc/pacman.d/mirrorlist; cat /etc/pacman.d/mirrorlist"
 alias update-after-break="sudo -Sy && sudo pacman -S archlinux-keyring && sudo pacman -Syu"
 
 # instant edit configs
@@ -87,6 +87,14 @@ motd-interactive-shell () {
   motd_timeout=86400 # 24 hours
   timestamp_file="$XDG_CACHE_HOME/interactive-shell-motd"
 
+  # what to run
+  motd-routine () {
+      sh $HOME/.dotfiles/scripts/check-archnews.sh
+      echo ""
+      sh $HOME/.dotfiles/scripts/check-inwx.sh
+  }
+
+  # motd display logic
   if [[ -e "$timestamp_file" ]] ; then
     last_motd_timestamp=$(cat "$timestamp_file")
     current_timestamp=$(date +%s)
@@ -95,13 +103,12 @@ motd-interactive-shell () {
 
     if [[ "$time_diff" -ge $motd_timeout ]] ; then
       echo "$current_timestamp" > "$timestamp_file"
-      cat /etc/motd
+      motd-routine
     fi
   else
     # if timestamp file doesn't exist, create it
     date +%s > "$timestamp_file"
-    cat /etc/motd
-    sh $HOME/.dotfiles/scripts/check-inwx.sh
+    motd-routine
   fi
 }
 
