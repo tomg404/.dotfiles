@@ -14,7 +14,7 @@ RESET='\e[0m'
 
 check_command_exists () {
   if ! command -v $1 &> /dev/null; then
-    echo "$1 is not installed!"
+    echo "Error executing $0: '$1' not installed"
     exit -1
   fi
 }

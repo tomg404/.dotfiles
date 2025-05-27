@@ -2,11 +2,11 @@
 
 # check if xmlstarlet and curl exist
 if ! command -v xmlstarlet &> /dev/null; then
-  echo "| Error executing $0: 'xmlstarlet' not installed" >&2
+  echo "Error executing $0: 'xmlstarlet' not installed" >&2
   exit 1
 fi
 if ! command -v curl &> /dev/null; then
-  echo "| Error executing $0: 'curl' not installed" >&2
+  echo "Error executing $0: 'curl' not installed" >&2
   exit 1
 fi
 
