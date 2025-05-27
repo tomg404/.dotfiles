@@ -13,8 +13,8 @@
 font pango:monospace 8
 
 # gaps
-gaps inner 5
-smart_gaps on
+#gaps inner 5
+#smart_gaps on
 
 # hide window title bar
 default_border pixel 1
@@ -53,7 +53,7 @@ exec --no-startup-id dunst
 exec --no-startup-id udiskie
 
 # start picom compositor
-exec_always --no-startup-id picom
+#exec_always --no-startup-id picom
 
 # start polybar via the startup script
 exec_always --no-startup-id "$XDG_CONFIG_HOME/polybar/launch.sh"
@@ -82,7 +82,7 @@ exec --no-startup-id i3-msg 'exec --no-startup-id /usr/bin/keepassxc;'
 set $mod Mod4
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec st -e /bin/zsh
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -289,9 +289,9 @@ for_window [class=$signal_class] floating enable
 for_window [class=$synology_class] floating enable
 for_window [class=$keepass_class] floating enable
 
-assign [class=$signal_class] $ws9
-assign [class=$synology_class] $ws9
-assign [class=$keepass_class] $ws9
+assign [class=$signal_class] $ws8
+assign [class=$synology_class] $ws0
+assign [class=$keepass_class] $ws0
 assign [class="discord"] $ws8
-assign [class="thunderbird"] $ws2
+assign [class="thunderbird"] $ws9
 assign [class="firefox"] $ws1
