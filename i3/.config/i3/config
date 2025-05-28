@@ -107,8 +107,8 @@ bindsym XF86Favorites exec systemctl hibernate
 bindsym Print exec flameshot gui
 
 # decrease / increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+bindsym XF86MonBrightnessUp exec brightnessctl set 10%+
 
 # change focus
 bindsym $mod+h focus left
