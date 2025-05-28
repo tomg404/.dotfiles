@@ -290,8 +290,8 @@ for_window [class=$synology_class] floating enable
 for_window [class=$keepass_class] floating enable
 
 assign [class=$signal_class] $ws8
-assign [class=$synology_class] $ws0
-assign [class=$keepass_class] $ws0
+assign [class=$synology_class] $ws10
+assign [class=$keepass_class] $ws10
 assign [class="discord"] $ws8
 assign [class="thunderbird"] $ws9
 assign [class="firefox"] $ws1
