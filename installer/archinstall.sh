@@ -7,6 +7,12 @@
 # scripts and guides. Most notably:
 # - https://github.com/classy-giraffe/easy-arch/
 # - https://www.dwarmstrong.org/archlinux-install/
+#
+# TODO:
+# - fix installation (currently doesnt boot after fde password input)
+# - check if package exist before installing
+# - check if package was installed
+# - add exit hook
 
 # Text Formatting
 RESET='\033[0m'
@@ -410,9 +416,9 @@ configure_system_more() {
     # === install desktop environment
     yn_prompt "install usable i3 desktop environment (with often used programs)?"
     if [[ $? -eq 0 ]]; then
-        info-msg "installing i3 de..."
+        info_msg "installing i3 de..."
         pacstrap /mnt \
-            acpilight alsa-firmware arandr bat blueberry bluez bluez-utils dmenu dunst \
+            alsa-firmware arandr bat blueberry bluez bluez-utils brightnessctl dmenu dunst \
             eza feh firefox flameshot fprintd git i3-wm i3lock keepassxc kitty lightdm lightdm-gtk-greeter neovim \
             networkmanager-openvpn networkmanager-vpnc noto-fonts-emoji obsidian okular openssh pacman-contrib papirus-icon-theme \
             pavucontrol picom polybar pulseaudio pulseaudio-bluetooth rofi sof-firmware stow thunar thunar-volman \
