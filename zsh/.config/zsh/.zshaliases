@@ -12,9 +12,10 @@ alias edit-zshaliases="$EDITOR $XDG_CONFIG_HOME/zsh/.zshaliases"
 alias edit-zshenv="$EDITOR $XDG_CONFIG_HOME/zsh/.zshenv"
 
 # networking
-alias wifi-rescan="nmcli device wifi rescan"
-alias wifi-list="nmcli device wifi list"
-alias wifi-connect="nmcli device wifi connect"
+alias wifi-rescan="iwctl station wlan0 scan"
+alias wifi-list="iwctl station wlan0 get-networks"
+alias wifi-connect="iwctl station wlan0 connect"
+alias wifi-disconnect="iwctl station wlan0 disconnect"
 
 # change keyboard layout
 alias layout-de="setxkbmap -layout de"
