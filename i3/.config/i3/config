@@ -97,8 +97,11 @@ bindsym $mod+c exec --no-startup-id networkmanager_dmenu
 bindsym $mod+o exec --no-startup-id xtrlock
 bindsym $mod+p exec --no-startup-id loginctl lock-session
 
-# toggle screenlayout (xrandr)
-bindsym $mod+Shift+x exec --no-startup-id "$HOME/.dotfiles/scripts/toggle-xrandr.sh"
+# toggle screen layout
+bindsym $mod+Shift+x exec --no-startup-id "$HOME/.dotfiles/scripts/xrandr/toggle-dual.sh"
+
+# turn on screen mirroring
+bindsym $mod+Shift+z exec --no-startup-id "$HOME/.dotfiles/scripts/xrandr/mirror.sh"
 
 # hibernate system
 bindsym XF86Favorites exec systemctl hibernate
